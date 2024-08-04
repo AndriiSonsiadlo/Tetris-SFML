@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 4.0)
 
 project(Tetris)
 
-set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -14,12 +15,4 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 add_subdirectory(resources)
-
-add_executable(Tetris src/main.cpp)
-target_link_libraries(Tetris
-        PRIVATE
-        SFML::Audio
-        SFML::Graphics
-)
-
-add_dependencies(Tetris copy_assets)
+add_subdirectory(src)

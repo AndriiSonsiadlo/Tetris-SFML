@@ -1,5 +1,3 @@
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        DESTINATION ${CMAKE_BINARY_DIR}/assets)
 add_custom_target(copy_assets ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/assets

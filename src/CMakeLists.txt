@@ -1,16 +1,11 @@
-cmake_minimum_required(VERSION 3.16)
+set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-# Set the project name and language
-project(MySFMLApp LANGUAGES CXX)
+add_executable(Tetris main.cpp)
+target_link_libraries(Tetris
+        PRIVATE
+        SFML::Audio
+        SFML::Graphics
+)
+target_include_directories(Tetris PRIVATE ${HEADERS_DIR})
 
-# Add the executable from main.cpp
-add_executable(MySFMLApp main.cpp)
-
-# Find SFML package
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
-
-# Link SFML libraries
-target_link_libraries(MySFMLApp PRIVATE sfml-graphics sfml-window sfml-system)
-
-# Optionally, add include directories if needed
-# target_include_directories(MySFMLApp PRIVATE ${CMAKE_SOURCE_DIR}/include)
+add_dependencies(Tetris copy_assets)
