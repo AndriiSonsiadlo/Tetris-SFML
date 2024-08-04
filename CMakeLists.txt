@@ -13,9 +13,13 @@ FetchContent_Declare(SFML
         SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
+add_subdirectory(resources)
+
 add_executable(Tetris src/main.cpp)
 target_link_libraries(Tetris
-    PRIVATE
+        PRIVATE
         SFML::Audio
         SFML::Graphics
 )
+
+add_dependencies(Tetris copy_assets)
