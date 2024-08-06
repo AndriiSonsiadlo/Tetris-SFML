@@ -22,4 +22,7 @@ public:
     void setSpriteTile(sf::Sprite& sprite, Tetris::TileConstants::TileColor color) const;
 
     sf::Sprite createSprite(Tetris::TileConstants::TileColor color) const;
+
+    static auto moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
+                               Tetris::TileConstants::TileDirection direction) -> void;
 };

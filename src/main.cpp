@@ -35,6 +35,9 @@ int main()
     auto sprite = tm.createSprite(Tetris::TileConstants::TileColor::BLUE);
     sprite.setPosition({100, 100});
 
+    auto sprite2 = tm.createSprite(Tetris::TileConstants::TileColor::RED);
+    tm.moveRelativeTo(sprite2, sprite, Tetris::TileConstants::TileDirection::UP);
+
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
@@ -50,6 +53,7 @@ int main()
         window.clear(sf::Color::White);
 
         window.draw(sprite);
+        window.draw(sprite2);
         window.display();
     }
     return 0;

@@ -8,6 +8,14 @@ namespace Tetris::TileConstants
     constexpr int TILE_SIZE = 30;
     constexpr int TILES_COUNT = 8;
 
+    enum class TileDirection
+    {
+        UP = 0,
+        RIGHT = 1,
+        DOWN = 2,
+        LEFT = 3
+    };
+
     enum class TileColor
     {
         CYAN = 0,
