@@ -24,4 +24,16 @@ namespace Tetris::TetrominoConstants
         J = 5,
         O = 6
     };
+
+    inline std::array<int, 4> getTetrominoShape(TetrominoType type)
+    {
+        const int shapeType = static_cast<int>(type);
+
+        return std::array<int, 4>{
+            TETROMINO_SHAPES[shapeType][0],
+            TETROMINO_SHAPES[shapeType][1],
+            TETROMINO_SHAPES[shapeType][2],
+            TETROMINO_SHAPES[shapeType][3]
+        };
+    }
 }
