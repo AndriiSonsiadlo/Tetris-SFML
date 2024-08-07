@@ -1,9 +1,14 @@
 set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/const")
 
-add_executable(Tetris main.cpp
-        TileManager.cpp
+add_executable(Tetris
+        main.cpp
+        const/TileConstants.h
+        const/TetrominoConstants.h
         include/TileManager.h
-        const/TileConstants.h)
+        TileManager.cpp
+        include/TetrominoManager.h
+        TetrominoManager.cpp
+)
 target_link_libraries(Tetris
         PRIVATE
         SFML::Audio
