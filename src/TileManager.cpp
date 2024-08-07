@@ -24,44 +24,43 @@ namespace Tetris
     }
 
 
-    sf::IntRect TileManager::getTileRect(Tetris::TileConstants::TileColor color)
+    sf::IntRect TileManager::getTileRect(TileConstants::TileColor color)
     {
-        const int tileIndex = static_cast<int>(color);
-        return Tetris::TileConstants::TILE_RECTS[tileIndex];
+        return TileConstants::TILE_RECT_MAP[color];
     }
 
-    void TileManager::setSpriteTile(sf::Sprite& sprite, const Tetris::TileConstants::TileColor color) const
+    void TileManager::setSpriteTile(sf::Sprite& sprite, const TileConstants::TileColor color) const
     {
         sprite.setTexture(tileTexture);
         sprite.setTextureRect(getTileRect(color));
     }
 
-    sf::Sprite TileManager::createSprite(const Tetris::TileConstants::TileColor color) const
+    sf::Sprite TileManager::createSprite(const TileConstants::TileColor color) const
     {
         return sf::Sprite(tileTexture, getTileRect(color));
     }
 
     void TileManager::moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
-                                     const Tetris::TileConstants::TileDirection direction)
+                                     const TileConstants::TileDirection direction)
     {
         float tileSize;
         sf::Vector2f newPosition = relateSprite.getPosition();
 
         switch (direction)
         {
-        case Tetris::TileConstants::TileDirection::RIGHT:
+        case TileConstants::TileDirection::RIGHT:
             tileSize = sourceSprite.getGlobalBounds().size.x;
             newPosition.x += tileSize;
             break;
-        case Tetris::TileConstants::TileDirection::LEFT:
+        case TileConstants::TileDirection::LEFT:
             tileSize = sourceSprite.getGlobalBounds().size.x;
             newPosition.x -= tileSize;
             break;
-        case Tetris::TileConstants::TileDirection::UP:
+        case TileConstants::TileDirection::UP:
             tileSize = sourceSprite.getGlobalBounds().size.y;
             newPosition.y -= tileSize;
             break;
-        case Tetris::TileConstants::TileDirection::DOWN:
+        case TileConstants::TileDirection::DOWN:
             tileSize = sourceSprite.getGlobalBounds().size.y;
             newPosition.y += tileSize;
             break;

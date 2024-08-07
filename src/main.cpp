@@ -28,7 +28,7 @@ int main()
     {
         constexpr int tileSize = 30;
         sf::IntRect rect({i * tileSize, 0}, {tileSize, tileSize});
-        spritesArray.push_back(sf::Sprite(*tilesTexture, Tetris::TileConstants::TILE_BLUE));
+        spritesArray.push_back(sf::Sprite(*tilesTexture, Tetris::TileConstants::TILE_RECT_MAP[Tetris::TileConstants::TileColor::BLUE]));
     }
 
 
