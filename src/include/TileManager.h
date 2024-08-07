@@ -5,24 +5,27 @@
 
 #include "../const/TileConstants.h"
 
-class TileManager
+namespace Tetris
 {
-private:
-    sf::Texture tileTexture;
+    class TileManager
+    {
+    private:
+        sf::Texture tileTexture;
 
-public:
-    TileManager();
+    public:
+        TileManager();
 
-    bool loadTileTexture(const std::string& filename);
+        bool loadTileTexture(const std::string& filename);
 
-    const sf::Texture& getTexture() const;
+        const sf::Texture& getTexture() const;
 
-    static sf::IntRect getTileRect(Tetris::TileConstants::TileColor color);
+        static sf::IntRect getTileRect(TileConstants::TileColor color);
 
-    void setSpriteTile(sf::Sprite& sprite, Tetris::TileConstants::TileColor color) const;
+        void setSpriteTile(sf::Sprite& sprite, TileConstants::TileColor color) const;
 
-    sf::Sprite createSprite(Tetris::TileConstants::TileColor color) const;
+        sf::Sprite createSprite(TileConstants::TileColor color) const;
 
-    static auto moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
-                               Tetris::TileConstants::TileDirection direction) -> void;
-};
+        static auto moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
+                                   TileConstants::TileDirection direction) -> void;
+    };
+}
