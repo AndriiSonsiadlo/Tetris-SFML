@@ -2,14 +2,16 @@
 #include <iostream>
 
 #include "const/TileConstants.h"
+#include "const/TetrominoConstants.h"
 #include "include/TileManager.h"
+#include "include/TetrominoManager.h"
 
 #define ASSETS_DIR "../assets/"
 
 
 int main()
 {
-    auto window = sf::RenderWindow(sf::VideoMode({800, 600}), "Tetris");
+    auto window = sf::RenderWindow(sf::VideoMode({600, 800}), "Tetris");
     window.setFramerateLimit(165);
 
     const auto tilesTexture = std::make_shared<sf::Texture>();
@@ -30,13 +32,17 @@ int main()
     }
 
 
-    auto tm = TileManager();
+    auto tm = Tetris::TileManager();
     tm.loadTileTexture(ASSETS_DIR "tiles.png");
     auto sprite = tm.createSprite(Tetris::TileConstants::TileColor::BLUE);
     sprite.setPosition({100, 100});
 
     auto sprite2 = tm.createSprite(Tetris::TileConstants::TileColor::RED);
     tm.moveRelativeTo(sprite2, sprite, Tetris::TileConstants::TileDirection::UP);
+
+
+    auto tetrominoManager = Tetris::TetrominoManager(tm);
+    auto tetrominoSprites = tetrominoManager.createTetrominoSprites(Tetris::TetrominoConstants::TetrominoType::T);
 
     while (window.isOpen())
     {
@@ -52,8 +58,12 @@ int main()
 
         window.clear(sf::Color::White);
 
-        window.draw(sprite);
-        window.draw(sprite2);
+
+        for (const auto& sprite1 : tetrominoSprites)
+        {
+            window.draw(sprite1);
+        }
+
         window.display();
     }
     return 0;
