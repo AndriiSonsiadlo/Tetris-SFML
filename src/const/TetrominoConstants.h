@@ -25,6 +25,16 @@ namespace Tetris::TetrominoConstants
         O = 6
     };
 
+    constexpr std::array TETROMINO_COLORS = {
+        TileConstants::TileColor::CYAN,    // I
+        TileConstants::TileColor::RED,     // Z
+        TileConstants::TileColor::GREEN,   // S
+        TileConstants::TileColor::PURPLE,  // T
+        TileConstants::TileColor::BLUE,    // L
+        TileConstants::TileColor::PINK,    // J
+        TileConstants::TileColor::YELLOW   // O
+    };
+
     inline std::array<int, 4> getTetrominoShape(TetrominoType type)
     {
         const int shapeType = static_cast<int>(type);
@@ -35,5 +45,21 @@ namespace Tetris::TetrominoConstants
             TETROMINO_SHAPES[shapeType][2],
             TETROMINO_SHAPES[shapeType][3]
         };
+    }
+
+    inline std::array<int[2], 4> getTetrominoCoordinates(const TetrominoType type)
+    {
+        const auto shape = getTetrominoShape(type);
+        std::array<int[2], 4> coordinates;
+
+        for (int i = 0; i < 4; ++i)
+        {
+            const int offsetX = (shape[i] % 2);
+            const int offsetY = (shape[i] / 2);
+            coordinates[i][0] = offsetX;
+            coordinates[i][1] = offsetY;
+        }
+
+        return coordinates;
     }
 }
