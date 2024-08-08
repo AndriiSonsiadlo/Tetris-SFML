@@ -8,6 +8,8 @@ add_executable(Tetris
         TileManager.cpp
         include/TetrominoManager.h
         TetrominoManager.cpp
+        include/TetrominoShape.h
+        TetrominoShape.cpp
 )
 target_link_libraries(Tetris
         PRIVATE
