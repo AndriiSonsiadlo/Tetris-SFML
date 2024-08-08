@@ -1,19 +1,9 @@
 #pragma once
 
+#include "TileConstants.h"
+
 namespace Tetris::TetrominoConstants
 {
-    constexpr int TETROMINO_COUNT = 7;
-
-    constexpr int TETROMINO_SHAPES[7][4] = {
-        {1, 3, 5, 7}, // I     [0][1]
-        {2, 4, 5, 7}, // Z     [2][3]
-        {3, 5, 4, 6}, // S     [4][5]
-        {3, 5, 4, 7}, // T     [6][7]
-        {2, 3, 5, 7}, // L
-        {3, 5, 7, 6}, // J
-        {2, 3, 4, 5}, // O
-    };
-
     enum class TetrominoType
     {
         I = 0,
@@ -22,44 +12,35 @@ namespace Tetris::TetrominoConstants
         T = 3,
         L = 4,
         J = 5,
-        O = 6
+        O = 6,
+        COUNT = 7
     };
 
-    constexpr std::array TETROMINO_COLORS = {
-        TileConstants::TileColor::CYAN,    // I
-        TileConstants::TileColor::RED,     // Z
-        TileConstants::TileColor::GREEN,   // S
-        TileConstants::TileColor::PURPLE,  // T
-        TileConstants::TileColor::BLUE,    // L
-        TileConstants::TileColor::PINK,    // J
-        TileConstants::TileColor::YELLOW   // O
+    constexpr int TETROMINO_COUNT = static_cast<int>(TetrominoType::COUNT);
+
+    // Tetromino shapes are represented in a 2x4 grid:
+    //  [0][1]
+    //  [2][3]
+    //  [4][5]
+    //  [6][7]
+
+    inline std::unordered_map<TetrominoType, std::array<int, 4>> TETROMINO_SHAPE_MAP = {
+        {TetrominoType::I, std::array{1, 3, 5, 7}},
+        {TetrominoType::Z, std::array{2, 4, 5, 7}},
+        {TetrominoType::S, std::array{3, 5, 4, 6}},
+        {TetrominoType::T, std::array{3, 5, 4, 7}},
+        {TetrominoType::L, std::array{2, 3, 5, 7}},
+        {TetrominoType::J, std::array{3, 5, 7, 6}},
+        {TetrominoType::O, std::array{2, 3, 4, 5}}
     };
 
-    inline std::array<int, 4> getTetrominoShape(TetrominoType type)
-    {
-        const int shapeType = static_cast<int>(type);
-
-        return std::array<int, 4>{
-            TETROMINO_SHAPES[shapeType][0],
-            TETROMINO_SHAPES[shapeType][1],
-            TETROMINO_SHAPES[shapeType][2],
-            TETROMINO_SHAPES[shapeType][3]
-        };
-    }
-
-    inline std::array<int[2], 4> getTetrominoCoordinates(const TetrominoType type)
-    {
-        const auto shape = getTetrominoShape(type);
-        std::array<int[2], 4> coordinates;
-
-        for (int i = 0; i < 4; ++i)
-        {
-            const int offsetX = (shape[i] % 2);
-            const int offsetY = (shape[i] / 2);
-            coordinates[i][0] = offsetX;
-            coordinates[i][1] = offsetY;
-        }
-
-        return coordinates;
-    }
+    inline std::unordered_map<TetrominoType, TileConstants::TileColor> TETROMINO_COLOR_MAP = {
+        {TetrominoType::I, TileConstants::TileColor::CYAN},
+        {TetrominoType::Z, TileConstants::TileColor::RED},
+        {TetrominoType::S, TileConstants::TileColor::GREEN},
+        {TetrominoType::T, TileConstants::TileColor::PURPLE},
+        {TetrominoType::L, TileConstants::TileColor::BLUE},
+        {TetrominoType::J, TileConstants::TileColor::PINK},
+        {TetrominoType::O, TileConstants::TileColor::YELLOW}
+    };
 }
