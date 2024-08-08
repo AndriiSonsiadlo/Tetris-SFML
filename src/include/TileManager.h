@@ -15,7 +15,7 @@ namespace Tetris
     public:
         TileManager();
 
-        bool loadTileTexture(const std::string& filename);
+        [[nodiscard]] bool loadTileTexture(const std::string& filename);
 
         const sf::Texture& getTexture() const;
 
