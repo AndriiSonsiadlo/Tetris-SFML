@@ -31,10 +31,4 @@ namespace Tetris
         }
         return sprites;
     }
-
-    TileConstants::TileColor TetrominoManager::getTetrominoColor(
-        TetrominoConstants::TetrominoType type)
-    {
-        return TetrominoConstants::TETROMINO_COLORS[static_cast<int>(type)];
-    }
 }

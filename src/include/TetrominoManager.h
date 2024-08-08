@@ -18,7 +18,5 @@ namespace Tetris
 
         [[nodiscard]] std::vector<sf::Sprite> createTetrominoSprites(
             TetrominoConstants::TetrominoType type) const;
-
-        static TileConstants::TileColor getTetrominoColor(TetrominoConstants::TetrominoType type);
     };
 }
