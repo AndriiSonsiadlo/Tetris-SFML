@@ -5,10 +5,6 @@
 // @formatter:off
 namespace Tetris::TileConstants
 {
-    constexpr int TILE_SIZE   = 30;
-    constexpr int TILES_COUNT = 8;
-
-
     enum class TileDirection
     {
         UP    = 0,
@@ -26,8 +22,12 @@ namespace Tetris::TileConstants
         LIGHT_GREEN = 4,
         YELLOW      = 5,
         RED         = 6,
-        GREEN       = 7
+        GREEN       = 7,
+        COUNT       = 8
     };
+
+    constexpr int TILE_SIZE   = 30;
+    constexpr int TILES_COUNT = static_cast<int>(TileColor::COUNT);
 
     inline std::unordered_map<TileColor, sf::IntRect> TILE_RECT_MAP = {
         {TileColor::CYAN,        sf::IntRect({  0, 0}, {TILE_SIZE, TILE_SIZE})},
