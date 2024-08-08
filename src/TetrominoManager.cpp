@@ -18,14 +18,13 @@ namespace Tetris
         const TetrominoShape shape(type);
 
         const auto color = shape.getColor();
-        const auto coordinates = shape.getCoordinates();
 
-        for (int i = 0; i < 4; ++i)
+        for (const auto coordinates = shape.getCoordinates(); const auto coordinate : coordinates)
         {
             auto sprite = tileManager.createSprite(color);
             sprite.setPosition({
-                static_cast<float>(coordinates[i].x * TileConstants::TILE_SIZE),
-                static_cast<float>(coordinates[i].y * TileConstants::TILE_SIZE)
+                static_cast<float>(coordinate.x * TileConstants::TILE_SIZE),
+                static_cast<float>(coordinate.y * TileConstants::TILE_SIZE)
             });
             sprites.push_back(sprite);
         }
