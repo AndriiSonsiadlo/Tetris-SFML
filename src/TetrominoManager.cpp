@@ -1,5 +1,7 @@
 #include "include/TetrominoManager.h"
 
+#include "TetrominoShape.h"
+
 namespace Tetris
 {
     TetrominoManager::TetrominoManager(TileManager& tileManager)
@@ -13,15 +15,17 @@ namespace Tetris
         std::vector<sf::Sprite> sprites;
         sprites.reserve(4);
 
-        const auto color = getTetrominoColor(type);
-        const auto coordinates = Tetris::TetrominoConstants::getTetrominoCoordinates(type);
+        const TetrominoShape shape(type);
+
+        const auto color = shape.getColor();
+        const auto coordinates = shape.getCoordinates();
 
         for (int i = 0; i < 4; ++i)
         {
             auto sprite = tileManager.createSprite(color);
             sprite.setPosition({
-                static_cast<float>(coordinates[i][0] * TileConstants::TILE_SIZE),
-                static_cast<float>(coordinates[i][1] * TileConstants::TILE_SIZE)
+                static_cast<float>(coordinates[i].x * TileConstants::TILE_SIZE),
+                static_cast<float>(coordinates[i].y * TileConstants::TILE_SIZE)
             });
             sprites.push_back(sprite);
         }
