@@ -10,6 +10,8 @@ add_executable(Tetris
         TetrominoManager.cpp
         include/TetrominoShape.h
         TetrominoShape.cpp
+        include/GameStats.h
+        GameStats.cpp
 )
 target_link_libraries(Tetris
         PRIVATE
