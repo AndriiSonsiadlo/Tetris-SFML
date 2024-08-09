@@ -1,66 +1,46 @@
-#include "include/GameStats.h"
+#include "GameStats.h"
 
-#include <SFML/Graphics.hpp>
-
-
-GameStats::GameStats() = default;
-
-std::string GameStats::nums_directory = "/number_pngs";
-
-int GameStats::getScore() const
+void GameStats::checkLevelUp(unsigned int oldLines)
 {
-    return score;
-}
-
-int GameStats::getLevel() const {
-    return level;
-}
-
-int GameStats::getTime() const
-{
-    return timeInSeconds;
-}
-
-int GameStats::getLinesCleared() const {
-    return linesCleared;
-}
-
-void GameStats::addLinesCleared(int n) {
-    addScore(n);
-    int old_lines = linesCleared;
-    linesCleared += n;
-
-    if (linesCleared % 10 < 4 && old_lines % 10 >= 4) {
-        level++;
+    if (linesCleared_ % LINES_PER_LEVEL < LEVEL_THRESHOLD &&
+        oldLines % LINES_PER_LEVEL >= LEVEL_THRESHOLD)
+    {
+        level_++;
     }
 }
 
-void GameStats::addTimeInSeconds(const int seconds) {
-    timeInSeconds += seconds;
-}
+void GameStats::updateScore(const unsigned int lines)
+{
+    ScoreMultiplier multiplier;
 
-void GameStats::addScore(const int lines) {
-    int x = 0;
-    switch(lines) {
+    switch (lines)
+    {
         case 1:
-            x = 40;
+            multiplier = ScoreMultiplier::SINGLE_LINE;
             break;
         case 2:
-            x = 80;
+            multiplier = ScoreMultiplier::DOUBLE_LINES;
             break;
         case 3:
-            x = 300;
+            multiplier = ScoreMultiplier::TRIPLE_LINES;
             break;
         case 4:
-            x = 1200;
-            break;
         default:
-            x = 0;
+            multiplier = ScoreMultiplier::TETRIS;
     }
 
-    score += x * (level+1);
+    score_ += static_cast<unsigned int>(multiplier) * (level_ + 1);
 }
 
-void GameStats::printStatsToWindow(sf::RenderWindow& window) {
+void GameStats::processLinesCleared(const unsigned int lineCount)
+{
+    updateScore(lineCount);
+    const unsigned int oldLines = linesCleared_;
+    linesCleared_ += lineCount;
+    checkLevelUp(oldLines);
+}
 
+void GameStats::updateGameTime(const unsigned int seconds)
+{
+    gameTime_ += seconds;
 }
