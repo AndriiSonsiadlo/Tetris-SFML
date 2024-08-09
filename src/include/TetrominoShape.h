@@ -4,7 +4,7 @@
 #include <array>
 #include <vector>
 
-#include "../const/TetrominoConstants.h"
+#include "TetrominoConstants.h"
 
 
 namespace Tetris

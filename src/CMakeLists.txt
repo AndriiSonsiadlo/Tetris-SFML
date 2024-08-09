@@ -1,16 +1,18 @@
-set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/const")
+set(HEADER_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_SOURCE_DIR}/const")
+
+file(GLOB_RECURSE HEADERS
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/const/*.h"
+        "${CMAKE_CURRENT_SOURCE_DIR}/const/*.hpp"
+)
 
 add_executable(Tetris
         main.cpp
-        const/TileConstants.h
-        const/TetrominoConstants.h
-        include/TileManager.h
+        ${HEADERS}
         TileManager.cpp
-        include/TetrominoManager.h
         TetrominoManager.cpp
-        include/TetrominoShape.h
         TetrominoShape.cpp
-        include/GameStats.h
         GameStats.cpp
 )
 target_link_libraries(Tetris
@@ -18,6 +20,6 @@ target_link_libraries(Tetris
         SFML::Audio
         SFML::Graphics
 )
-target_include_directories(Tetris PRIVATE ${HEADERS_DIR})
+target_include_directories(Tetris PRIVATE ${HEADER_DIRS})
 
 add_dependencies(Tetris copy_assets)

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "../const/TileConstants.h"
+#include "TileConstants.h"
 
 namespace Tetris
 {

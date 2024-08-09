@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "const/TileConstants.h"
-#include "const/TetrominoConstants.h"
+#include "TileConstants.h"
+#include "TetrominoConstants.h"
 #include "TileManager.h"
 #include "TetrominoManager.h"
 

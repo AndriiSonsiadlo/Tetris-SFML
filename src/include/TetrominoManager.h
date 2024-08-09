@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "TileManager.h"
-#include "../const/TetrominoConstants.h"
+#include "TetrominoConstants.h"
 
 namespace Tetris
 {
