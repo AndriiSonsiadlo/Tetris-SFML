@@ -3,8 +3,8 @@
 
 #include "const/TileConstants.h"
 #include "const/TetrominoConstants.h"
-#include "include/TileManager.h"
-#include "include/TetrominoManager.h"
+#include "TileManager.h"
+#include "TetrominoManager.h"
 
 #define ASSETS_DIR "../assets/"
 
