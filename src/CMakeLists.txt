@@ -14,6 +14,7 @@ add_executable(Tetris
         TetrominoManager.cpp
         TetrominoShape.cpp
         GameStats.cpp
+        GameBackground.cpp
 )
 target_link_libraries(Tetris
         PRIVATE
