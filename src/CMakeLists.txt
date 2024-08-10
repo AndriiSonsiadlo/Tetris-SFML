@@ -24,4 +24,4 @@ target_link_libraries(Tetris
 )
 target_include_directories(Tetris PRIVATE ${HEADER_DIRS})
 
-add_dependencies(Tetris copy_assets)
+add_dependencies(Tetris copy_assets copy_fonts)
