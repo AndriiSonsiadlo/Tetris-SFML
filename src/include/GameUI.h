@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "GameBackground.h"
+
 namespace Tetris
 {
     class GameUI
@@ -11,12 +13,14 @@ namespace Tetris
         sf::Text levelText, scoreText, linesClearedText;
         sf::RectangleShape gameBoard;
         sf::RectangleShape sidePanel;
+        GameBackground background_;
 
+        void setupUI();
     public:
         GameUI();
-        void setupUI();
         void updateLevel(unsigned int level);
         void updateScore(unsigned int score);
         void updateLines(unsigned int lines);
+        void draw(sf::RenderWindow& window) const;
     };
 }
