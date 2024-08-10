@@ -4,6 +4,7 @@
 #include "GameBackground.h"
 #include "GameStats.h"
 #include "GameUI.h"
+#include "GameStates.h"
 
 namespace Tetris
 {
@@ -11,9 +12,10 @@ namespace Tetris
     {
     private:
         sf::RenderWindow window_;
-        Tetris::GameBackground background_;
-        Tetris::GameStats stats_;
-        Tetris::GameUI ui_;
+        GameBackground background_;
+        GameStats stats_;
+        GameUI ui_;
+        GameState state_;
 
         void handleEvents();
         void update();

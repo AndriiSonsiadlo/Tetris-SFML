@@ -4,7 +4,8 @@ namespace Tetris
 {
     Game::Game() :
         window_(sf::VideoMode({700, 700}), "Space Puzzle Game"),
-        background_("../assets/background.jpg", "../assets/foreground.jpg")
+        background_("../assets/background.jpg", "../assets/foreground.jpg"),
+        state_(GameState::Start)
     {
         window_.setFramerateLimit(60);
     }
