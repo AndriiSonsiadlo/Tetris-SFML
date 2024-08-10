@@ -48,6 +48,16 @@ namespace Tetris
     void GameBackground::draw(sf::RenderWindow& window) const
     {
         window.draw(*backgroundSprite);
-        window.draw(*foregroundSprite);
+        // window.draw(*foregroundSprite);
+    }
+
+    const sf::Texture* GameBackground::getBackgroundTexture() const
+    {
+        return &backgroundTexture;
+    }
+
+    const sf::Texture* GameBackground::getForegroundTexture() const
+    {
+        return &foregroundTexture;
     }
 }

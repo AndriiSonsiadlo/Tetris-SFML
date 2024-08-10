@@ -15,8 +15,8 @@ namespace Tetris {
         sf::Texture foregroundTexture;
         std::shared_ptr<sf::Sprite> backgroundSprite{nullptr};
         std::shared_ptr<sf::Sprite> foregroundSprite{nullptr};
-        
-        bool loadTexture(const std::string& path, sf::Texture& texture, 
+
+        bool loadTexture(const std::string& path, sf::Texture& texture,
                         std::shared_ptr<sf::Sprite>& sprite, const char* errorMsg);
         
     public:
@@ -26,5 +26,7 @@ namespace Tetris {
         void setScale(float scaleX, float scaleY) const;
         void setPosition(float x, float y) const;
         void draw(sf::RenderWindow& window) const;
+        const sf::Texture* getBackgroundTexture() const;
+        const sf::Texture* getForegroundTexture() const;
     };
 }
