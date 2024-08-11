@@ -12,7 +12,6 @@ namespace Tetris
     {
     private:
         sf::RenderWindow window_;
-        GameBackground background_;
         GameStats stats_;
         GameUI ui_;
         GameState state_;

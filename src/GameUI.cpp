@@ -5,7 +5,8 @@
 
 namespace Tetris
 {
-    GameUI::GameUI() : levelText(font), scoreText(font), linesClearedText(font), background_("../assets/img4.jpg", "../assets/img2.jpg")
+    GameUI::GameUI(sf::RenderWindow& window) : levelText(font), scoreText(font), linesClearedText(font),
+                                               background("../assets/img4.jpg", "../assets/img2.jpg"), window(window)
     {
         if (!font.openFromFile("../fonts/200-x-light.otf"))
         {
@@ -67,13 +68,63 @@ namespace Tetris
     {
         linesClearedText.setString("LINES\nCLEARED\n" + std::to_string(lines));
     }
-    void GameUI::draw(sf::RenderWindow& window) const
+
+    void GameUI::draw() const
     {
-        background_.draw(window);
+        background.draw(window);
         window.draw(gameBoard);
         window.draw(sidePanel);
         window.draw(levelText);
         window.draw(scoreText);
         window.draw(linesClearedText);
+    }
+
+    void GameUI::displayGameStats(const GameStats &stats)
+    {
+        updateLevel(stats.getLevel());
+        updateScore(stats.getScore());
+        updateLines(stats.getLinesCleared());
+    }
+
+    void GameUI::displayGameScreen(GameState state) const
+    {
+        if (state == GameState::Start)
+        {
+            sf::Text startText(font, "Press Enter to Start", 30);
+            startText.setFillColor(sf::Color::White);
+            startText.setPosition({
+                window.getSize().x / 2 - startText.getGlobalBounds().size.x / 2,
+                window.getSize().y / 2 - startText.getGlobalBounds().size.y / 2
+            });
+            window.draw(startText);
+        }
+        else if (state == GameState::Play)
+        {
+            background.draw(window);
+            window.draw(gameBoard);
+            window.draw(sidePanel);
+            window.draw(levelText);
+            window.draw(scoreText);
+            window.draw(linesClearedText);
+        }
+        else if (state == GameState::Pause){
+            sf::Text pauseText(font, "Game Paused\nPress P to Resume", 30);
+            pauseText.setFillColor(sf::Color::Yellow);
+            pauseText.setPosition({
+                window.getSize().x / 2 - pauseText.getGlobalBounds().size.x / 2,
+                window.getSize().y / 2 - pauseText.getGlobalBounds().size.y / 2
+            });
+            window.draw(pauseText);
+        }
+        else if (state == GameState::GameOver)
+        {
+            sf::Text gameOverText(font, "Game Over! Press Enter to Restart", 30);
+            gameOverText.setFillColor(sf::Color::Red);
+            gameOverText.setPosition({
+                window.getSize().x / 2 - gameOverText.getGlobalBounds().size.x / 2,
+                window.getSize().y / 2 - gameOverText.getGlobalBounds().size.y / 2
+            });
+            window.draw(gameOverText);
+        }
     }
 }

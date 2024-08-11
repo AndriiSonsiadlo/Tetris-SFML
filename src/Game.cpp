@@ -6,8 +6,8 @@ namespace Tetris
 {
     Game::Game() :
         window_(sf::VideoMode({600, 800}), "Tetris", sf::Style::Titlebar | sf::Style::Close),
-        background_("../assets/img1.jpg", "../assets/img1.jpg"),
-        state_(GameState::Start)
+        state_(GameState::Start),
+        ui_(window_)
     {
         window_.setVerticalSyncEnabled(true);
         window_.setFramerateLimit(60);
@@ -71,17 +71,14 @@ namespace Tetris
 
     void Game::update()
     {
-        ui_.updateLevel(stats_.getLevel());
-        ui_.updateScore(stats_.getScore());
-        ui_.updateLines(stats_.getLinesCleared());
+        ui_.displayGameStats(stats_);
     }
 
     void Game::render()
     {
         window_.clear();
 
-        background_.draw(window_);
-        ui_.draw(window_);
+        ui_.displayGameScreen(state_);
 
         window_.display();
     }
