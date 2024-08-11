@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <iostream>
+
 namespace Tetris
 {
     Game::Game() :
@@ -28,7 +30,39 @@ namespace Tetris
             {
                 window_.close();
             }
-
+            if (event->is<sf::Event::KeyPressed>())
+            {
+                switch (const auto* keyEvent = event->getIf<sf::Event::KeyPressed>(); keyEvent->code)
+                {
+                    case sf::Keyboard::Key::Left:
+                        std::cout << "Left key pressed" << std::endl;
+                        break;
+                    case sf::Keyboard::Key::Right:
+                        std::cout << "Right key pressed" << std::endl;
+                        break;
+                    case sf::Keyboard::Key::Down:
+                        std::cout << "Down key pressed" << std::endl;
+                        break;
+                    case sf::Keyboard::Key::Up:
+                        std::cout << "Up key pressed" << std::endl;
+                        break;
+                    case sf::Keyboard::Key::Escape:
+                        window_.close();
+                        break;
+                    case sf::Keyboard::Key::Enter:
+                        if (state_ == GameState::Start)
+                            state_ = GameState::Play;
+                        else if (state_ == GameState::GameOver)
+                            state_ = GameState::Start;
+                    case sf::Keyboard::Key::P:
+                        if (state_ == GameState::Play)
+                            state_ = GameState::Pause;
+                        else if (state_ == GameState::Pause)
+                            state_ = GameState::Play;
+                    default:
+                        break;
+                }
+            }
         }
     }
 
