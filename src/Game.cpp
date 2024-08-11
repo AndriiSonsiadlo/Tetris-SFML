@@ -55,11 +55,13 @@ namespace Tetris
                             state_ = GameState::Play;
                         else if (state_ == GameState::GameOver)
                             state_ = GameState::Start;
+                        break;
                     case sf::Keyboard::Key::P:
                         if (state_ == GameState::Play)
                             state_ = GameState::Pause;
                         else if (state_ == GameState::Pause)
                             state_ = GameState::Play;
+                        break;
                     default:
                         break;
                 }
