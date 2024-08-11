@@ -5,10 +5,11 @@
 namespace Tetris
 {
     Game::Game() :
-        window_(sf::VideoMode({700, 700}), "Space Puzzle Game"),
-        background_("../assets/background.jpg", "../assets/foreground.jpg"),
+        window_(sf::VideoMode({600, 800}), "Tetris", sf::Style::Titlebar | sf::Style::Close),
+        background_("../assets/img1.jpg", "../assets/img1.jpg"),
         state_(GameState::Start)
     {
+        window_.setVerticalSyncEnabled(true);
         window_.setFramerateLimit(60);
     }
 
@@ -78,8 +79,7 @@ namespace Tetris
         window_.clear();
 
         background_.draw(window_);
-
-        // ui_.draw(window);
+        ui_.draw(window_);
 
         window_.display();
     }
