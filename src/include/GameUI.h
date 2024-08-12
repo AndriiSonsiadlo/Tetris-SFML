@@ -15,8 +15,9 @@ namespace Tetris
         sf::Text levelText, scoreText, linesClearedText;
         sf::RectangleShape gameBoard;
         sf::RectangleShape sidePanel;
-        GameBackground background;
         sf::RenderWindow& window;
+        GameBackground background;
+        GameStats& stats;
 
         void setupPlayScreen();
 
@@ -24,14 +25,15 @@ namespace Tetris
         void displayScore(unsigned int score);
         void displayLines(unsigned int lines);
 
-        void displayPlayScreen() const;
+        void displayPlayScreen();
         void displayMessageScreen(const std::string& textMessage, sf::Color color = sf::Color::White) const;
+        void displayGameStats();
     public:
-        explicit GameUI(sf::RenderWindow& window);
+        explicit GameUI(sf::RenderWindow& window, GameStats& stats);
 
+        void clearWindow() const;
         void refreshWindow() const;
 
-        void displayGameStats(const GameStats& stats);
-        void displayGameScreen(GameState state) const;
+        void displayGameScreen(GameState state);
     };
 }

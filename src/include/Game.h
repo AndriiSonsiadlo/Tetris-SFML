@@ -15,10 +15,12 @@ namespace Tetris
         GameStats stats_;
         GameUI ui_;
         GameState state_;
+        sf::Clock gameClock_;
 
         void handleEvents();
-        void update();
+        void update(sf::Time deltaTime);
         void render();
+        void processKeyPress(sf::Keyboard::Key key);
 
     public:
         Game();

@@ -7,8 +7,12 @@
 
 namespace Tetris
 {
-    GameUI::GameUI(sf::RenderWindow& window) : levelText(font), scoreText(font), linesClearedText(font),
-                                               background(ASSETS_DIR "img4.jpg", ASSETS_DIR "img2.jpg"), window(window)
+    GameUI::GameUI(sf::RenderWindow& window, GameStats& stats) : levelText(font), scoreText(font),
+                                                                 linesClearedText(font),
+                                                                 window(window),
+                                                                 background(ASSETS_DIR "img4.jpg",
+                                                                            ASSETS_DIR "img2.jpg"),
+                                                                 stats(stats)
     {
         if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
             throw std::runtime_error("Font loading failed");
@@ -64,7 +68,7 @@ namespace Tetris
         linesClearedText.setString("LINES\nCLEARED\n" + std::to_string(lines));
     }
 
-    void GameUI::displayPlayScreen() const
+    void GameUI::displayPlayScreen()
     {
         background.draw(window);
         window.draw(gameBoard);
@@ -72,6 +76,15 @@ namespace Tetris
         window.draw(levelText);
         window.draw(scoreText);
         window.draw(linesClearedText);
+
+        displayGameStats();
+    }
+
+    void GameUI::displayGameStats()
+    {
+        displayLevel(stats.getLevel());
+        displayScore(stats.getScore());
+        displayLines(stats.getLinesCleared());
     }
 
     void GameUI::displayMessageScreen(const std::string& textMessage, const sf::Color color) const
@@ -85,19 +98,17 @@ namespace Tetris
         window.draw(text);
     }
 
+    void GameUI::clearWindow() const
+    {
+        window.clear();
+    }
+
     void GameUI::refreshWindow() const
     {
         window.display();
     }
 
-    void GameUI::displayGameStats(const GameStats& stats)
-    {
-        displayLevel(stats.getLevel());
-        displayScore(stats.getScore());
-        displayLines(stats.getLinesCleared());
-    }
-
-    void GameUI::displayGameScreen(const GameState state) const
+    void GameUI::displayGameScreen(const GameState state)
     {
         if (state == GameState::Start)
             displayMessageScreen("Press Enter to Start");
