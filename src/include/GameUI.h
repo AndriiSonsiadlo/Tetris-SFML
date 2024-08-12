@@ -18,7 +18,7 @@ namespace Tetris
         GameBackground background;
         sf::RenderWindow& window;
 
-        void setupUI();
+        void setupPlayScreen();
 
         void displayLevel(unsigned int level);
         void displayScore(unsigned int score);

@@ -1,27 +1,22 @@
-#include "include/GameUI.h"
-#include <iostream>
-
+#include "GameUI.h"
 #include "GameBackground.h"
+
+#define ASSETS_DIR "../assets/"
+#define FONTS_DIR "../fonts/"
+
 
 namespace Tetris
 {
     GameUI::GameUI(sf::RenderWindow& window) : levelText(font), scoreText(font), linesClearedText(font),
-                                               background("../assets/img4.jpg", "../assets/img2.jpg"), window(window)
+                                               background(ASSETS_DIR "img4.jpg", ASSETS_DIR "img2.jpg"), window(window)
     {
-        if (!font.openFromFile("../fonts/200-x-light.otf"))
-        {
-            std::cerr << "Failed to load font. Using default font." << std::endl;
-            if (!font.openFromFile("C:/Windows/Fonts/300-light.otf"))
-            {
-                std::cerr << "Failed to load default font." << std::endl;
-                throw std::runtime_error("Font loading failed");
-            };
-        }
+        if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
+            throw std::runtime_error("Font loading failed");
 
-        setupUI();
+        setupPlayScreen();
     }
 
-    void GameUI::setupUI()
+    void GameUI::setupPlayScreen()
     {
         gameBoard.setSize(sf::Vector2f(250, 600));
         gameBoard.setPosition({50, 50});
@@ -78,6 +73,7 @@ namespace Tetris
         window.draw(scoreText);
         window.draw(linesClearedText);
     }
+
     void GameUI::displayMessageScreen(const std::string& textMessage, const sf::Color color) const
     {
         sf::Text text(font, textMessage, 30);
@@ -88,6 +84,7 @@ namespace Tetris
         });
         window.draw(text);
     }
+
     void GameUI::refreshWindow() const
     {
         window.display();

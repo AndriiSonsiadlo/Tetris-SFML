@@ -1,7 +1,5 @@
 #include "Game.h"
 
-#define ASSETS_DIR "../assets/"
-
 
 int main()
 {
