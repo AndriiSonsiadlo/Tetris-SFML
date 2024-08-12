@@ -54,22 +54,22 @@ namespace Tetris
         linesClearedText.setPosition({340, 320});
     }
 
-    void GameUI::updateLevel(const unsigned int level)
+    void GameUI::displayLevel(const unsigned int level)
     {
         levelText.setString("LEVEL\n" + std::to_string(level));
     }
 
-    void GameUI::updateScore(const unsigned int score)
+    void GameUI::displayScore(const unsigned int score)
     {
         scoreText.setString("SCORE\n" + std::to_string(score));
     }
 
-    void GameUI::updateLines(const unsigned int lines)
+    void GameUI::displayLines(const unsigned int lines)
     {
         linesClearedText.setString("LINES\nCLEARED\n" + std::to_string(lines));
     }
 
-    void GameUI::draw() const
+    void GameUI::displayPlayScreen() const
     {
         background.draw(window);
         window.draw(gameBoard);
@@ -78,53 +78,39 @@ namespace Tetris
         window.draw(scoreText);
         window.draw(linesClearedText);
     }
-
-    void GameUI::displayGameStats(const GameStats &stats)
+    void GameUI::displayMessageScreen(const std::string& textMessage, const sf::Color color) const
     {
-        updateLevel(stats.getLevel());
-        updateScore(stats.getScore());
-        updateLines(stats.getLinesCleared());
+        sf::Text text(font, textMessage, 30);
+        text.setFillColor(color);
+        text.setPosition({
+            window.getSize().x / 2 - text.getGlobalBounds().size.x / 2,
+            window.getSize().y / 2 - text.getGlobalBounds().size.y / 2
+        });
+        window.draw(text);
+    }
+    void GameUI::refreshWindow() const
+    {
+        window.display();
     }
 
-    void GameUI::displayGameScreen(GameState state) const
+    void GameUI::displayGameStats(const GameStats& stats)
+    {
+        displayLevel(stats.getLevel());
+        displayScore(stats.getScore());
+        displayLines(stats.getLinesCleared());
+    }
+
+    void GameUI::displayGameScreen(const GameState state) const
     {
         if (state == GameState::Start)
-        {
-            sf::Text startText(font, "Press Enter to Start", 30);
-            startText.setFillColor(sf::Color::White);
-            startText.setPosition({
-                window.getSize().x / 2 - startText.getGlobalBounds().size.x / 2,
-                window.getSize().y / 2 - startText.getGlobalBounds().size.y / 2
-            });
-            window.draw(startText);
-        }
+            displayMessageScreen("Press Enter to Start");
         else if (state == GameState::Play)
         {
-            background.draw(window);
-            window.draw(gameBoard);
-            window.draw(sidePanel);
-            window.draw(levelText);
-            window.draw(scoreText);
-            window.draw(linesClearedText);
+            displayPlayScreen();
         }
-        else if (state == GameState::Pause){
-            sf::Text pauseText(font, "Game Paused\nPress P to Resume", 30);
-            pauseText.setFillColor(sf::Color::Yellow);
-            pauseText.setPosition({
-                window.getSize().x / 2 - pauseText.getGlobalBounds().size.x / 2,
-                window.getSize().y / 2 - pauseText.getGlobalBounds().size.y / 2
-            });
-            window.draw(pauseText);
-        }
+        else if (state == GameState::Pause)
+            displayMessageScreen("Game Paused\nPress P to Resume", sf::Color::Yellow);
         else if (state == GameState::GameOver)
-        {
-            sf::Text gameOverText(font, "Game Over! Press Enter to Restart", 30);
-            gameOverText.setFillColor(sf::Color::Red);
-            gameOverText.setPosition({
-                window.getSize().x / 2 - gameOverText.getGlobalBounds().size.x / 2,
-                window.getSize().y / 2 - gameOverText.getGlobalBounds().size.y / 2
-            });
-            window.draw(gameOverText);
-        }
+            displayMessageScreen("Game Over! Press Enter to Restart", sf::Color::Red);
     }
 }

@@ -19,14 +19,19 @@ namespace Tetris
         sf::RenderWindow& window;
 
         void setupUI();
+
+        void displayLevel(unsigned int level);
+        void displayScore(unsigned int score);
+        void displayLines(unsigned int lines);
+
+        void displayPlayScreen() const;
+        void displayMessageScreen(const std::string& textMessage, sf::Color color = sf::Color::White) const;
     public:
         explicit GameUI(sf::RenderWindow& window);
 
-        void updateLevel(unsigned int level);
-        void updateScore(unsigned int score);
-        void updateLines(unsigned int lines);
-        void draw() const;
-        void displayGameScreen(GameState state) const;
+        void refreshWindow() const;
+
         void displayGameStats(const GameStats& stats);
+        void displayGameScreen(GameState state) const;
     };
 }

@@ -80,6 +80,6 @@ namespace Tetris
 
         ui_.displayGameScreen(state_);
 
-        window_.display();
+        ui_.refreshWindow();
     }
 }
