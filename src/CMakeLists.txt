@@ -17,6 +17,7 @@ add_executable(Tetris
         GameBackground.cpp
         GameUI.cpp
         Game.cpp
+        Playfield.cpp
 )
 target_link_libraries(Tetris
         PRIVATE
