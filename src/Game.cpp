@@ -29,17 +29,17 @@ namespace Tetris
     {
         switch (key)
         {
+            case sf::Keyboard::Key::A:
             case sf::Keyboard::Key::Left:
-                std::cout << "Left key pressed" << std::endl;
                 break;
+            case sf::Keyboard::Key::D:
             case sf::Keyboard::Key::Right:
-                std::cout << "Right key pressed" << std::endl;
                 break;
+            case sf::Keyboard::Key::S:
             case sf::Keyboard::Key::Down:
-                std::cout << "Down key pressed" << std::endl;
                 break;
+            case sf::Keyboard::Key::W:
             case sf::Keyboard::Key::Up:
-                std::cout << "Up key pressed" << std::endl;
                 break;
             case sf::Keyboard::Key::Escape:
                 window.close();
