@@ -4,19 +4,19 @@
 
 namespace Tetris
 {
-    Game::Game() :
-        window_(sf::VideoMode({600, 800}), "Tetris", sf::Style::Titlebar | sf::Style::Close),
-        state_(GameState::Start),
-        ui_(window_, stats_)
+    Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, std::string windowTitle) :
+        window(sf::VideoMode({windowSizeX, windowSizeY}), windowTitle, sf::Style::Titlebar | sf::Style::Close),
+        ui(window, stats),
+        state(GameState::Start)
     {
-        window_.setVerticalSyncEnabled(true);
-        window_.setFramerateLimit(60);
+        window.setVerticalSyncEnabled(true);
+        window.setFramerateLimit(60);
     }
 
     void Game::run()
     {
         sf::Clock clock;
-        while (window_.isOpen())
+        while (window.isOpen())
         {
             const sf::Time deltaTime = clock.restart();
             handleEvents();
@@ -42,26 +42,26 @@ namespace Tetris
                 std::cout << "Up key pressed" << std::endl;
                 break;
             case sf::Keyboard::Key::Escape:
-                window_.close();
+                window.close();
                 break;
             case sf::Keyboard::Key::Enter:
-                if (state_ == GameState::Start)
+                if (state == GameState::Start)
                 {
-                    state_ = GameState::Play;
+                    state = GameState::Play;
                 }
-                else if (state_ == GameState::GameOver)
+                else if (state == GameState::GameOver)
                 {
-                    state_ = GameState::Start;
+                    state = GameState::Start;
                 }
                 break;
             case sf::Keyboard::Key::P:
-                if (state_ == GameState::Play)
+                if (state == GameState::Play)
                 {
-                    state_ = GameState::Pause;
+                    state = GameState::Pause;
                 }
-                else if (state_ == GameState::Pause)
+                else if (state == GameState::Pause)
                 {
-                    state_ = GameState::Play;
+                    state = GameState::Play;
                 }
                 break;
             default:
@@ -71,10 +71,10 @@ namespace Tetris
 
     void Game::handleEvents()
     {
-        while (const std::optional event = window_.pollEvent())
+        while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
-                window_.close();
+                window.close();
             if (event->is<sf::Event::KeyPressed>())
             {
                 const auto* keyEvent = event->getIf<sf::Event::KeyPressed>();
@@ -85,18 +85,18 @@ namespace Tetris
 
     void Game::update(const sf::Time deltaTime)
     {
-        if (state_ == GameState::Play)
+        if (state == GameState::Play)
         {
-            stats_.updateGameTime(static_cast<unsigned int>(deltaTime.asSeconds()));
+            stats.updateGameTime(static_cast<unsigned int>(deltaTime.asSeconds()));
         }
     }
 
     void Game::render()
     {
-        ui_.clearWindow();
+        ui.clearWindow();
 
-        ui_.displayGameScreen(state_);
+        ui.displayGameScreen(state);
 
-        ui_.refreshWindow();
+        ui.refreshWindow();
     }
 }

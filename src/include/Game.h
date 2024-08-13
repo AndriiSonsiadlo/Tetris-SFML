@@ -11,11 +11,10 @@ namespace Tetris
     class Game
     {
     private:
-        sf::RenderWindow window_;
-        GameStats stats_;
-        GameUI ui_;
-        GameState state_;
-        sf::Clock gameClock_;
+        sf::RenderWindow window;
+        GameStats stats;
+        GameUI ui;
+        GameState state;
 
         void handleEvents();
         void update(sf::Time deltaTime);
@@ -23,7 +22,7 @@ namespace Tetris
         void processKeyPress(sf::Keyboard::Key key);
 
     public:
-        Game();
+        Game(unsigned int windowSizeX, unsigned int windowSizeY, std::string windowTitle);
         void run();
     };
 }
