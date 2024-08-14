@@ -70,6 +70,54 @@ namespace Tetris
         }
     }
 
+    void Game::movePiece(int dx, int dy)
+    {
+        if (!currentPiece) return;
+
+        auto testPiece = *currentPiece;
+        testPiece.move(dx, dy);
+
+        if (playfield.canPlacePiece(testPiece.getPositions())) {
+            currentPiece->move(dx, dy);
+        }
+    }
+
+    void Game::rotatePiece() const
+    {
+        if (!currentPiece) return;
+
+        if (const auto rotatedPositions = currentPiece->getRotatedPositions(); playfield.canPlacePiece(rotatedPositions)) {
+            currentPiece->rotate();
+        }
+    }
+
+    void Game::dropPiece()
+    {
+        if (!currentPiece) return;
+
+        auto testPiece = *currentPiece;
+        testPiece.move(0, 1);
+
+        if (playfield.canPlacePiece(testPiece.getPositions())) {
+            currentPiece->move(0, 1);
+        } else {
+            lockPiece();
+        }
+    }
+
+    void Game::lockPiece()
+    {
+        if (!currentPiece) return;
+
+        playfield.placePiece(currentPiece->getPositions(), currentPiece->getColor());
+
+        if (const int linesCleared = playfield.checkAndClearLines(); linesCleared > 0) {
+            stats.processLinesCleared(linesCleared);
+        }
+
+        spawnNewPiece();
+        dropClock.restart();
+    }
     void Game::handleEvents()
     {
         while (const std::optional event = window.pollEvent())
