@@ -1,10 +1,11 @@
 #include "Game.h"
-
+#include "Tetromino.h"
 #include <iostream>
+#include <random>
 
 namespace Tetris
 {
-    Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, std::string windowTitle) :
+    Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, const std::string& windowTitle) :
         window(sf::VideoMode({windowSizeX, windowSizeY}), windowTitle, sf::Style::Titlebar | sf::Style::Close),
         ui(window, stats),
         state(GameState::Start)
