@@ -28,41 +28,69 @@ namespace Tetris
 
     void Game::processKeyPress(const sf::Keyboard::Key key)
     {
+        if (state == GameState::Play && currentPiece) {
+            switch (key)
+            {
+                case sf::Keyboard::Key::A:
+                case sf::Keyboard::Key::Left:
+                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                        movePiece(-1, 0);
+                        inputClock.restart();
+                    }
+                    break;
+                case sf::Keyboard::Key::D:
+                case sf::Keyboard::Key::Right:
+                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                        movePiece(1, 0);
+                        inputClock.restart();
+                    }
+                    break;
+                case sf::Keyboard::Key::S:
+                case sf::Keyboard::Key::Down:
+                    dropPiece();
+                    break;
+                case sf::Keyboard::Key::W:
+                case sf::Keyboard::Key::Up:
+                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                        rotatePiece();
+                        inputClock.restart();
+                    }
+                    break;
+                case sf::Keyboard::Key::Space:
+                    while (playfield.canPlacePiece(currentPiece->getPositions())) {
+                        currentPiece->move(0, 1);
+                    }
+                    currentPiece->move(0, -1);
+                    lockPiece();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         switch (key)
         {
-            case sf::Keyboard::Key::A:
-            case sf::Keyboard::Key::Left:
-                break;
-            case sf::Keyboard::Key::D:
-            case sf::Keyboard::Key::Right:
-                break;
-            case sf::Keyboard::Key::S:
-            case sf::Keyboard::Key::Down:
-                break;
-            case sf::Keyboard::Key::W:
-            case sf::Keyboard::Key::Up:
-                break;
             case sf::Keyboard::Key::Escape:
                 window.close();
                 break;
             case sf::Keyboard::Key::Enter:
-                if (state == GameState::Start)
-                {
+                if (state == GameState::Start) {
                     state = GameState::Play;
+                    dropClock.restart();
                 }
-                else if (state == GameState::GameOver)
-                {
-                    state = GameState::Start;
+                else if (state == GameState::GameOver) {
+                    initializeGame();
+                    state = GameState::Play;
+                    dropClock.restart();
                 }
                 break;
             case sf::Keyboard::Key::P:
-                if (state == GameState::Play)
-                {
+                if (state == GameState::Play) {
                     state = GameState::Pause;
                 }
-                else if (state == GameState::Pause)
-                {
+                else if (state == GameState::Pause) {
                     state = GameState::Play;
+                    dropClock.restart();
                 }
                 break;
             default:
@@ -118,6 +146,12 @@ namespace Tetris
         spawnNewPiece();
         dropClock.restart();
     }
+
+    float Game::getDropSpeed() const
+    {
+        return std::max(0.1f, DROP_INTERVAL - (stats.getLevel() - 1) * 0.1f);
+    }
+
     void Game::handleEvents()
     {
         while (const std::optional event = window.pollEvent())
@@ -125,10 +159,7 @@ namespace Tetris
             if (event->is<sf::Event::Closed>())
                 window.close();
             if (event->is<sf::Event::KeyPressed>())
-            {
-                const auto* keyEvent = event->getIf<sf::Event::KeyPressed>();
-                processKeyPress(keyEvent->code);
-            }
+                processKeyPress(event->getIf<sf::Event::KeyPressed>()->code);
         }
     }
 
@@ -137,6 +168,11 @@ namespace Tetris
         if (state == GameState::Play)
         {
             stats.updateGameTime(static_cast<unsigned int>(deltaTime.asSeconds()));
+
+            if (dropClock.getElapsedTime().asSeconds() > getDropSpeed()) {
+                dropPiece();
+                dropClock.restart();
+            }
         }
     }
 
