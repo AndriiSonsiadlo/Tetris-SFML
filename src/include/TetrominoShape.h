@@ -11,7 +11,7 @@ namespace Tetris
 {
     struct Point;
 
-    using Shape = std::array<int, 4>;
+    using Shape       = std::array<int, 4>;
     using Coordinates = std::array<Point, 4>;
 
     struct Point
@@ -30,35 +30,42 @@ namespace Tetris
 
     struct TetrominoShape
     {
+    private:
         TetrominoConstants::TetrominoType shapeType;
 
+    public:
         explicit TetrominoShape(const TetrominoConstants::TetrominoType type)
             : shapeType(type)
         {
         }
 
-        Coordinates getCoordinates() const
+        [[nodiscard]] Coordinates getCoordinates() const
         {
             Coordinates shapeCoordinates{};
 
             const auto shape = getShape();
             for (int i = 0; i < shape.size(); ++i)
             {
-                const int x = (shape[i] % 2);
-                const int y = (shape[i] / 2);
+                const int x         = (shape[i] % 2);
+                const int y         = (shape[i] / 2);
                 shapeCoordinates[i] = {x, y};
             }
             return shapeCoordinates;
         }
 
-        Shape getShape() const
+        [[nodiscard]] Shape getShape() const
         {
             return TetrominoConstants::TETROMINO_SHAPE_MAP[shapeType];
         }
 
-        TileConstants::TileColor getColor() const
+        [[nodiscard]] TileConstants::TileColor getColor() const
         {
             return TetrominoConstants::TETROMINO_COLOR_MAP[shapeType];
+        }
+
+        [[nodiscard]] TetrominoConstants::TetrominoType getType() const
+        {
+            return shapeType;
         }
     };
 }
