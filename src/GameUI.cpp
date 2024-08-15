@@ -26,12 +26,8 @@ namespace Tetris
             throw std::runtime_error("Failed to load text font");
         if (!tileManager.loadTileTexture(ASSETS_DIR "tiles.png"))
             throw std::runtime_error("Failed to load tiles texture");
-
-        static sf::Texture backgroundTexture, foregroundTexture;
         if (!backgroundTexture.loadFromFile(ASSETS_DIR "img4.jpg") || !foregroundTexture.loadFromFile(ASSETS_DIR "img2.jpg"))
             throw std::runtime_error("Failed to load foreground or background texture");
-        backgroundSprite = std::make_shared<sf::Sprite>(backgroundTexture);
-        foregroundSprite = std::make_shared<sf::Sprite>(foregroundTexture);
     }
 
     void GameUI::setupPlayScreen()
@@ -149,8 +145,9 @@ namespace Tetris
 
     void GameUI::displayPlayScreen(const Tetromino* currentPiece, const Tetromino* nextPiece)
     {
-        window.draw(*backgroundSprite);
-        window.draw(gameBoard);
+        window.draw(sf::Sprite(backgroundTexture));
+
+        window.draw(gv ameBoard);
         window.draw(sidePanel);
         window.draw(nextPiecePanel);
         window.draw(levelText);

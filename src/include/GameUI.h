@@ -22,8 +22,7 @@ namespace Tetris
         Playfield& playfield;
         TileManager tileManager;
 
-        std::shared_ptr<sf::Sprite> backgroundSprite{nullptr};
-        std::shared_ptr<sf::Sprite> foregroundSprite{nullptr};
+        sf::Texture backgroundTexture, foregroundTexture;
 
         void loadAssets();
         void setupPlayScreen();
