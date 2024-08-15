@@ -1,18 +1,22 @@
 #include "GameUI.h"
 #include "GameBackground.h"
+#include "Tetromino.h"
 
 #define ASSETS_DIR "../assets/"
 #define FONTS_DIR "../fonts/"
 
-
 namespace Tetris
 {
-    GameUI::GameUI(sf::RenderWindow& window, GameStats& stats) : levelText(font), scoreText(font),
-                                                                 linesClearedText(font),
-                                                                 window(window),
-                                                                 background(ASSETS_DIR "img4.jpg",
-                                                                            ASSETS_DIR "img2.jpg"),
-                                                                 stats(stats)
+    GameUI::GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield, TileManager& tileManager)
+        : levelText(font),
+          scoreText(font),
+          linesClearedText(font),
+          nextPieceText(font),
+          window(window),
+          background(ASSETS_DIR "img4.jpg", ASSETS_DIR "img2.jpg"),
+          stats(stats),
+          playfield(playfield),
+          tileManager(tileManager)
     {
         if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
             throw std::runtime_error("Font loading failed");
@@ -22,35 +26,47 @@ namespace Tetris
 
     void GameUI::setupPlayScreen()
     {
-        gameBoard.setSize(sf::Vector2f(250, 600));
+        gameBoard.setSize(sf::Vector2f(300, 600));
         gameBoard.setPosition({50, 50});
         gameBoard.setFillColor(sf::Color(20, 20, 40, 150));
         gameBoard.setOutlineColor(sf::Color(100, 150, 200, 200));
         gameBoard.setOutlineThickness(2);
 
         sidePanel.setSize(sf::Vector2f(200, 600));
-        sidePanel.setPosition({320, 50});
+        sidePanel.setPosition({370, 50});
         sidePanel.setFillColor(sf::Color(10, 10, 30, 180));
         sidePanel.setOutlineColor(sf::Color(80, 120, 160, 200));
         sidePanel.setOutlineThickness(2);
+
+        nextPiecePanel.setSize(sf::Vector2f(120, 120));
+        nextPiecePanel.setPosition({390, 450});
+        nextPiecePanel.setFillColor(sf::Color(30, 30, 50, 200));
+        nextPiecePanel.setOutlineColor(sf::Color(100, 150, 200, 200));
+        nextPiecePanel.setOutlineThickness(1);
 
         levelText.setFont(font);
         levelText.setString("LEVEL\n1");
         levelText.setCharacterSize(24);
         levelText.setFillColor(sf::Color::White);
-        levelText.setPosition({340, 80});
+        levelText.setPosition({390, 80});
 
         scoreText.setFont(font);
         scoreText.setString("SCORE\n0");
         scoreText.setCharacterSize(24);
         scoreText.setFillColor(sf::Color::White);
-        scoreText.setPosition({340, 200});
+        scoreText.setPosition({390, 180});
 
         linesClearedText.setFont(font);
-        linesClearedText.setString("LINES\nCLEARED\n0");
+        linesClearedText.setString("LINES\n0");
         linesClearedText.setCharacterSize(24);
         linesClearedText.setFillColor(sf::Color::White);
-        linesClearedText.setPosition({340, 320});
+        linesClearedText.setPosition({390, 280});
+
+        nextPieceText.setFont(font);
+        nextPieceText.setString("NEXT");
+        nextPieceText.setCharacterSize(20);
+        nextPieceText.setFillColor(sf::Color::White);
+        nextPieceText.setPosition({420, 420});
     }
 
     void GameUI::displayLevel(const unsigned int level)
@@ -65,19 +81,77 @@ namespace Tetris
 
     void GameUI::displayLines(const unsigned int lines)
     {
-        linesClearedText.setString("LINES\nCLEARED\n" + std::to_string(lines));
+        linesClearedText.setString("LINES\n" + std::to_string(lines));
     }
 
-    void GameUI::displayPlayScreen()
+    void GameUI::displayPlayfield()
+    {
+        const float tileSize = 30.0f;
+        const sf::Vector2f boardOffset(60, 60);
+
+        for (int y = 4; y < Playfield::HEIGHT; ++y)
+        {
+            for (int x = 0; x < Playfield::WIDTH; ++x)
+            {
+                if (playfield.getCell(x, y) == Playfield::Cell::Filled)
+                {
+                    auto sprite = tileManager.createSprite(playfield.getCellColor(x, y));
+                    sprite.setPosition({boardOffset.x + x * tileSize, boardOffset.y + (y - 4) * tileSize});
+                    window.draw(sprite);
+                }
+            }
+        }
+    }
+
+    void GameUI::displayCurrentPiece(const Tetromino* piece)
+    {
+        if (!piece) return;
+
+        const float tileSize = 30.0f;
+        const sf::Vector2f boardOffset(60, 60);
+
+        for (const auto& pos : piece->getPositions())
+        {
+            if (pos.y >= 4)
+            {
+                auto sprite = tileManager.createSprite(piece->getColor());
+                sprite.setPosition({boardOffset.x + pos.x * tileSize, boardOffset.y + (pos.y - 4) * tileSize});
+                window.draw(sprite);
+            }
+        }
+    }
+
+    void GameUI::displayNextPiece(const Tetromino* piece)
+    {
+        if (!piece) return;
+
+        const float tileSize = 20.0f;
+        const sf::Vector2f nextOffset(430, 480);
+
+        for (const auto& pos : piece->getPositions())
+        {
+            auto sprite = tileManager.createSprite(piece->getColor());
+            sprite.setScale({0.67f, 0.67f});
+            sprite.setPosition({nextOffset.x + pos.x * tileSize, nextOffset.y + pos.y * tileSize});
+            window.draw(sprite);
+        }
+    }
+
+    void GameUI::displayPlayScreen(const Tetromino* currentPiece, const Tetromino* nextPiece)
     {
         background.draw(window);
         window.draw(gameBoard);
         window.draw(sidePanel);
+        window.draw(nextPiecePanel);
         window.draw(levelText);
         window.draw(scoreText);
         window.draw(linesClearedText);
+        window.draw(nextPieceText);
 
         displayGameStats();
+        displayPlayfield();
+        displayCurrentPiece(currentPiece);
+        displayNextPiece(nextPiece);
     }
 
     void GameUI::displayGameStats()
@@ -108,13 +182,13 @@ namespace Tetris
         window.display();
     }
 
-    void GameUI::displayGameScreen(const GameState state)
+    void GameUI::displayGameScreen(const GameState state, const Tetromino* currentPiece, const Tetromino* nextPiece)
     {
         if (state == GameState::Start)
             displayMessageScreen("Press Enter to Start");
         else if (state == GameState::Play)
         {
-            displayPlayScreen();
+            displayPlayScreen(currentPiece, nextPiece);
         }
         else if (state == GameState::Pause)
             displayMessageScreen("Game Paused\nPress P to Resume", sf::Color::Yellow);

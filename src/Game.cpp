@@ -7,7 +7,7 @@ namespace Tetris
 {
     Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, const std::string& windowTitle) :
         window(sf::VideoMode({windowSizeX, windowSizeY}), windowTitle, sf::Style::Titlebar | sf::Style::Close),
-        ui(window, stats),
+        ui(window, stats, playfield, tileManager),
         state(GameState::Start)
     {
         window.setVerticalSyncEnabled(true);
@@ -218,9 +218,7 @@ namespace Tetris
     void Game::render()
     {
         ui.clearWindow();
-
-        ui.displayGameScreen(state);
-
+        ui.displayGameScreen(state, currentPiece.get(), nextPiece.get());
         ui.refreshWindow();
     }
 }
