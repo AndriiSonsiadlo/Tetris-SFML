@@ -7,7 +7,7 @@ namespace Tetris
 {
     Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, const std::string& windowTitle) :
         window(sf::VideoMode({windowSizeX, windowSizeY}), windowTitle, sf::Style::Titlebar | sf::Style::Close),
-        ui(window, stats, playfield, tileManager),
+        ui(window, stats, playfield),
         state(GameState::Start)
     {
         window.setVerticalSyncEnabled(true);
@@ -18,10 +18,6 @@ namespace Tetris
 
     void Game::initializeGame()
     {
-        if (!tileManager.loadTileTexture("../assets/tiles.png")) {
-            throw std::runtime_error("Failed to load tile texture");
-        }
-
         stats = GameStats();
         playfield = Playfield();
         currentPiece = nullptr;

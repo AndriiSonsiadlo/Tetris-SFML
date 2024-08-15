@@ -16,7 +16,6 @@ namespace Tetris
     private:
         sf::RenderWindow window;
         GameStats stats;
-        TileManager tileManager;
         GameUI ui;
         Playfield playfield;
         std::unique_ptr<Tetromino> currentPiece;

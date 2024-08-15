@@ -22,7 +22,7 @@ namespace Tetris
         GameBackground background;
         GameStats& stats;
         Playfield& playfield;
-        TileManager& tileManager;
+        TileManager tileManager;
 
         void setupPlayScreen();
 
@@ -37,7 +37,7 @@ namespace Tetris
         void displayGameStats();
 
     public:
-        explicit GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield, TileManager& tileManager);
+        explicit GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield);
 
         void clearWindow() const;
         void refreshWindow() const;

@@ -7,7 +7,7 @@
 
 namespace Tetris
 {
-    GameUI::GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield, TileManager& tileManager)
+    GameUI::GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield)
         : levelText(font),
           scoreText(font),
           linesClearedText(font),
@@ -15,11 +15,13 @@ namespace Tetris
           window(window),
           background(ASSETS_DIR "img4.jpg", ASSETS_DIR "img2.jpg"),
           stats(stats),
-          playfield(playfield),
-          tileManager(tileManager)
+          playfield(playfield)
     {
         if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
             throw std::runtime_error("Font loading failed");
+        if (!tileManager.loadTileTexture(ASSETS_DIR "tiles.png")) {
+            throw std::runtime_error("Failed to load tile texture");
+        }
 
         setupPlayScreen();
     }
