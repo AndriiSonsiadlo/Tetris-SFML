@@ -12,6 +12,45 @@ namespace Tetris
     {
         window.setVerticalSyncEnabled(true);
         window.setFramerateLimit(60);
+
+        initializeGame();
+    }
+
+    void Game::initializeGame()
+    {
+        if (!tileManager.loadTileTexture("../assets/tiles.png")) {
+            throw std::runtime_error("Failed to load tile texture");
+        }
+
+        stats = GameStats();
+        playfield = Playfield();
+        currentPiece = nullptr;
+        nextPiece = nullptr;
+
+        spawnNewPiece();
+        spawnNewPiece();
+    }
+
+    void Game::spawnNewPiece()
+    {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> dis(0, static_cast<int>(TetrominoConstants::TetrominoType::COUNT) - 1);
+
+        if (nextPiece) {
+            currentPiece = std::move(nextPiece);
+            currentPiece->setPosition({4, 0});
+        } else {
+            auto type = static_cast<TetrominoConstants::TetrominoType>(dis(gen));
+            currentPiece = std::make_unique<Tetromino>(type, sf::Vector2i(4, 0));
+        }
+
+        auto nextType = static_cast<TetrominoConstants::TetrominoType>(dis(gen));
+        nextPiece = std::make_unique<Tetromino>(nextType, sf::Vector2i(0, 0));
+
+        if (!playfield.canPlacePiece(currentPiece->getPositions())) {
+            state = GameState::GameOver;
+        }
     }
 
     void Game::run()

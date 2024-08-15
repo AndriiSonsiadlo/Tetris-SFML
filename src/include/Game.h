@@ -33,6 +33,8 @@ namespace Tetris
         void render();
         void processKeyPress(sf::Keyboard::Key key);
 
+        void initializeGame();
+        void spawnNewPiece();
         void dropPiece();
         void movePiece(int dx, int dy);
         void rotatePiece() const;
