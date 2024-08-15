@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
-#include "TileConstants.h"
+#include "TileConst.h"
 
 namespace Tetris
 {
@@ -19,13 +19,13 @@ namespace Tetris
 
         const sf::Texture& getTexture() const;
 
-        static sf::IntRect getTileRect(TileConstants::TileColor color);
+        static sf::IntRect getTileRect(TileColor color);
 
-        void setSpriteTile(sf::Sprite& sprite, TileConstants::TileColor color) const;
+        void setSpriteTile(sf::Sprite& sprite, TileColor color) const;
 
-        sf::Sprite createSprite(TileConstants::TileColor color) const;
+        sf::Sprite createSprite(TileColor color) const;
 
         static auto moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
-                                   TileConstants::TileDirection direction) -> void;
+                                   TileDirection direction) -> void;
     };
 }

@@ -5,7 +5,7 @@
 #include "Enums.h"
 
 
-namespace Tetris::Tile
+namespace Tetris::TileConst
 {
     constexpr int TILE_SIZE   = 30;
     constexpr int TILES_COUNT = static_cast<int>(TileColor::COUNT);

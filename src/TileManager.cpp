@@ -24,43 +24,43 @@ namespace Tetris
     }
 
 
-    sf::IntRect TileManager::getTileRect(TileConstants::TileColor color)
+    sf::IntRect TileManager::getTileRect(TileColor color)
     {
-        return TileConstants::TILE_RECT_MAP[color];
+        return TileConst::TILE_RECT_MAP[color];
     }
 
-    void TileManager::setSpriteTile(sf::Sprite& sprite, const TileConstants::TileColor color) const
+    void TileManager::setSpriteTile(sf::Sprite& sprite, const TileColor color) const
     {
         sprite.setTexture(tileTexture);
         sprite.setTextureRect(getTileRect(color));
     }
 
-    sf::Sprite TileManager::createSprite(const TileConstants::TileColor color) const
+    sf::Sprite TileManager::createSprite(const TileColor color) const
     {
         return sf::Sprite(tileTexture, getTileRect(color));
     }
 
     void TileManager::moveRelativeTo(sf::Sprite& sourceSprite, const sf::Sprite& relateSprite,
-                                     const TileConstants::TileDirection direction)
+                                     const TileDirection direction)
     {
         float tileSize;
         sf::Vector2f newPosition = relateSprite.getPosition();
 
         switch (direction)
         {
-        case TileConstants::TileDirection::RIGHT:
+        case TileDirection::RIGHT:
             tileSize = sourceSprite.getGlobalBounds().size.x;
             newPosition.x += tileSize;
             break;
-        case TileConstants::TileDirection::LEFT:
+        case TileDirection::LEFT:
             tileSize = sourceSprite.getGlobalBounds().size.x;
             newPosition.x -= tileSize;
             break;
-        case TileConstants::TileDirection::UP:
+        case TileDirection::UP:
             tileSize = sourceSprite.getGlobalBounds().size.y;
             newPosition.y -= tileSize;
             break;
-        case TileConstants::TileDirection::DOWN:
+        case TileDirection::DOWN:
             tileSize = sourceSprite.getGlobalBounds().size.y;
             newPosition.y += tileSize;
             break;
