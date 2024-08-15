@@ -2,30 +2,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Enums.h"
 
-namespace Tetris::TileConstants
+
+namespace Tetris::Tile
 {
-    enum class TileDirection
-    {
-        UP    = 0,
-        RIGHT = 1,
-        DOWN  = 2,
-        LEFT  = 3
-    };
-
-    enum class TileColor
-    {
-        CYAN        = 0,
-        BLUE        = 1,
-        PURPLE      = 2,
-        PINK        = 3,
-        LIGHT_GREEN = 4,
-        YELLOW      = 5,
-        RED         = 6,
-        GREEN       = 7,
-        COUNT       = 8
-    };
-
     constexpr int TILE_SIZE   = 30;
     constexpr int TILES_COUNT = static_cast<int>(TileColor::COUNT);
 
