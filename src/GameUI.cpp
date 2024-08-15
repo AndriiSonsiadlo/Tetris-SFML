@@ -1,5 +1,4 @@
 #include "GameUI.h"
-#include "GameBackground.h"
 #include "Tetromino.h"
 
 #define ASSETS_DIR "../assets/"
@@ -13,17 +12,26 @@ namespace Tetris
           linesClearedText(font),
           nextPieceText(font),
           window(window),
-          background(ASSETS_DIR "img4.jpg", ASSETS_DIR "img2.jpg"),
           stats(stats),
           playfield(playfield)
     {
-        if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
-            throw std::runtime_error("Font loading failed");
-        if (!tileManager.loadTileTexture(ASSETS_DIR "tiles.png")) {
-            throw std::runtime_error("Failed to load tile texture");
-        }
+        loadAssets();
 
         setupPlayScreen();
+    }
+
+    void GameUI::loadAssets()
+    {
+        if (!font.openFromFile(FONTS_DIR "200-x-light.otf"))
+            throw std::runtime_error("Failed to load text font");
+        if (!tileManager.loadTileTexture(ASSETS_DIR "tiles.png"))
+            throw std::runtime_error("Failed to load tiles texture");
+
+        static sf::Texture backgroundTexture, foregroundTexture;
+        if (!backgroundTexture.loadFromFile(ASSETS_DIR "img4.jpg") || !foregroundTexture.loadFromFile(ASSETS_DIR "img2.jpg"))
+            throw std::runtime_error("Failed to load foreground or background texture");
+        backgroundSprite = std::make_shared<sf::Sprite>(backgroundTexture);
+        foregroundSprite = std::make_shared<sf::Sprite>(foregroundTexture);
     }
 
     void GameUI::setupPlayScreen()
@@ -141,7 +149,7 @@ namespace Tetris
 
     void GameUI::displayPlayScreen(const Tetromino* currentPiece, const Tetromino* nextPiece)
     {
-        background.draw(window);
+        window.draw(*backgroundSprite);
         window.draw(gameBoard);
         window.draw(sidePanel);
         window.draw(nextPiecePanel);

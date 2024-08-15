@@ -14,7 +14,6 @@ add_executable(Tetris
         TetrominoManager.cpp
         TetrominoShape.cpp
         GameStats.cpp
-        GameBackground.cpp
         GameUI.cpp
         Game.cpp
         Playfield.cpp

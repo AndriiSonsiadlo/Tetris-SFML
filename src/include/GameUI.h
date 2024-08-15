@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "GameBackground.h"
 #include "Enums.h"
 #include "GameStats.h"
 #include "Playfield.h"
@@ -19,16 +18,20 @@ namespace Tetris
         sf::RectangleShape sidePanel;
         sf::RectangleShape nextPiecePanel;
         sf::RenderWindow& window;
-        GameBackground background;
         GameStats& stats;
         Playfield& playfield;
         TileManager tileManager;
 
+        std::shared_ptr<sf::Sprite> backgroundSprite{nullptr};
+        std::shared_ptr<sf::Sprite> foregroundSprite{nullptr};
+
+        void loadAssets();
         void setupPlayScreen();
 
         void displayLevel(unsigned int level);
         void displayScore(unsigned int score);
         void displayLines(unsigned int lines);
+
         void displayPlayScreen(const Tetromino* currentPiece, const Tetromino* nextPiece);
         void displayPlayfield();
         void displayCurrentPiece(const Tetromino* piece);
@@ -38,6 +41,7 @@ namespace Tetris
 
     public:
         explicit GameUI(sf::RenderWindow& window, GameStats& stats, Playfield& playfield);
+
 
         void clearWindow() const;
         void refreshWindow() const;
