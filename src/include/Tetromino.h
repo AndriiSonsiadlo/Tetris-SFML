@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "TetrominoConstants.h"
+
 #include "TetrominoShape.h"
-#include "TileConstants.h"
+#include "TileConst.h"
 
 namespace Tetris
 {
@@ -17,12 +17,13 @@ namespace Tetris
         int rotationState;
 
         void updatePositions();
+
     public:
-        Tetromino(TetrominoConstants::TetrominoType type, sf::Vector2i startPos);
+        Tetromino(TetrominoType type, sf::Vector2i startPos);
 
         [[nodiscard]] const std::vector<sf::Vector2i>& getPositions() const { return positions; }
-        [[nodiscard]] TileConstants::TileColor getColor() const { return shape.getColor(); }
-        [[nodiscard]] TetrominoConstants::TetrominoType getType() const { return shape.getType(); }
+        [[nodiscard]] TileColor getColor() const { return shape.getColor(); }
+        [[nodiscard]] TetrominoType getType() const { return shape.getType(); }
 
         void move(int dx, int dy);
         void rotate();

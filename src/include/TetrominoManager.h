@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "TileManager.h"
-#include "TetrominoConstants.h"
+#include "TetrominoConst.h"
 
 namespace Tetris
 {
@@ -17,6 +17,6 @@ namespace Tetris
         explicit TetrominoManager(TileManager& tileManager);
 
         [[nodiscard]] std::vector<sf::Sprite> createTetrominoSprites(
-            TetrominoConstants::TetrominoType type) const;
+            TetrominoType type) const;
     };
 }

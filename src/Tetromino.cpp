@@ -3,7 +3,7 @@
 
 namespace Tetris
 {
-    Tetromino::Tetromino(const TetrominoConstants::TetrominoType type, const sf::Vector2i startPos)
+    Tetromino::Tetromino(const TetrominoType type, const sf::Vector2i startPos)
         : shape(type), offset(startPos), rotationState(0)
     {
         const TetrominoShape shape(type);
@@ -17,7 +17,8 @@ namespace Tetris
         positions.clear();
         positions.reserve(4);
 
-        for (const auto& coord : coords) {
+        for (const auto& coord : coords)
+        {
             positions.emplace_back(coord.x + offset.x, coord.y + offset.y);
         }
     }
@@ -35,17 +36,20 @@ namespace Tetris
         updatePositions();
     }
 
-    std::vector<sf::Vector2i> Tetromino::getRotatedPositions() const {
+    std::vector<sf::Vector2i> Tetromino::getRotatedPositions() const
+    {
         std::vector<sf::Vector2i> rotated;
         rotated.reserve(4);
 
         const int angle = (rotationState + 1) % 4;
 
-        for (const auto& pos : positions) {
+        for (const auto& pos : positions)
+        {
             sf::Vector2i localPos = pos - offset;
             sf::Vector2i rotatedLocal;
 
-            switch (angle) {
+            switch (angle)
+            {
                 case 1: // 90 degrees
                     rotatedLocal = sf::Vector2i(-localPos.y, localPos.x);
                     break;

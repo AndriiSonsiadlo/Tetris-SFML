@@ -2,9 +2,8 @@
 
 
 #include <array>
-#include <vector>
 
-#include "TetrominoConstants.h"
+#include "TetrominoConst.h"
 
 
 namespace Tetris
@@ -31,10 +30,10 @@ namespace Tetris
     struct TetrominoShape
     {
     private:
-        TetrominoConstants::TetrominoType shapeType;
+        TetrominoType shapeType;
 
     public:
-        explicit TetrominoShape(const TetrominoConstants::TetrominoType type)
+        explicit TetrominoShape(const TetrominoType type)
             : shapeType(type)
         {
         }
@@ -55,15 +54,15 @@ namespace Tetris
 
         [[nodiscard]] Shape getShape() const
         {
-            return TetrominoConstants::TETROMINO_SHAPE_MAP[shapeType];
+            return TetrominoConst::TETROMINO_SHAPE_MAP[shapeType];
         }
 
-        [[nodiscard]] TileConstants::TileColor getColor() const
+        [[nodiscard]] TileColor getColor() const
         {
-            return TetrominoConstants::TETROMINO_COLOR_MAP[shapeType];
+            return TetrominoConst::TETROMINO_COLOR_MAP[shapeType];
         }
 
-        [[nodiscard]] TetrominoConstants::TetrominoType getType() const
+        [[nodiscard]] TetrominoType getType() const
         {
             return shapeType;
         }

@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include "Enums.h"
 #include "GameStats.h"
 #include "GameUI.h"
-#include "GameStates.h"
 #include "Playfield.h"
 #include "TileManager.h"
 #include "Tetromino.h"
@@ -25,7 +25,7 @@ namespace Tetris
 
         sf::Clock dropClock;
         sf::Clock inputClock;
-        static constexpr float DROP_INTERVAL = 1.0f;
+        static constexpr float DROP_INTERVAL  = 1.0f;
         static constexpr float INPUT_INTERVAL = 0.1f;
 
         void handleEvents();

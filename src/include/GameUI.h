@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameBackground.h"
-#include "GameStates.h"
+#include "Enums.h"
 #include "GameStats.h"
 #include "Playfield.h"
 #include "TileManager.h"
