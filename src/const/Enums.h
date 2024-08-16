@@ -10,13 +10,6 @@ namespace Tetris
         GameOver,
     };
 
-    enum class MoveDirection
-    {
-        Left  = (-1, 0),
-        Right = (1, 0),
-        Down  = (0, 1)
-    };
-
     enum class TetrominoType
     {
         I     = 0,

@@ -13,6 +13,7 @@ add_executable(Tetris
         TileManager.cpp
         TetrominoManager.cpp
         TetrominoShape.cpp
+        GameController.cpp
         GameStats.cpp
         GameUI.cpp
         Game.cpp
