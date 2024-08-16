@@ -147,7 +147,7 @@ namespace Tetris
     {
         window.draw(sf::Sprite(backgroundTexture));
 
-        window.draw(gv ameBoard);
+        window.draw(gameBoard);
         window.draw(sidePanel);
         window.draw(nextPiecePanel);
         window.draw(levelText);

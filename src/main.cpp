@@ -7,7 +7,7 @@ int main()
 {
     try
     {
-        Tetris::Game game(600, 800, "Tetris");
+        Tetris::Game game;
         game.run();
     }
     catch (const std::exception& e)

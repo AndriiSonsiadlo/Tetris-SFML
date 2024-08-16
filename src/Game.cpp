@@ -1,12 +1,14 @@
-#include "Game.h"
-#include "Tetromino.h"
 #include <iostream>
 #include <random>
 
+#include "Game.h"
+#include "GameConfig.h"
+#include "Tetromino.h"
+
 namespace Tetris
 {
-    Game::Game(unsigned int windowSizeX, unsigned int windowSizeY, const std::string& windowTitle) :
-        window(sf::VideoMode({windowSizeX, windowSizeY}), windowTitle, sf::Style::Titlebar | sf::Style::Close),
+    Game::Game() :
+        window(sf::VideoMode({GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT}), GameConfig::WINDOW_TITLE, sf::Style::Titlebar | sf::Style::Close),
         ui(window, stats, playfield),
         state(GameState::Start)
     {
@@ -68,14 +70,14 @@ namespace Tetris
             {
                 case sf::Keyboard::Key::A:
                 case sf::Keyboard::Key::Left:
-                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                    if (inputClock.getElapsedTime().asSeconds() > GameConfig::INPUT_INTERVAL) {
                         movePiece(-1, 0);
                         inputClock.restart();
                     }
                     break;
                 case sf::Keyboard::Key::D:
                 case sf::Keyboard::Key::Right:
-                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                    if (inputClock.getElapsedTime().asSeconds() > GameConfig::INPUT_INTERVAL) {
                         movePiece(1, 0);
                         inputClock.restart();
                     }
@@ -86,7 +88,7 @@ namespace Tetris
                     break;
                 case sf::Keyboard::Key::W:
                 case sf::Keyboard::Key::Up:
-                    if (inputClock.getElapsedTime().asSeconds() > INPUT_INTERVAL) {
+                    if (inputClock.getElapsedTime().asSeconds() > GameConfig::INPUT_INTERVAL) {
                         rotatePiece();
                         inputClock.restart();
                     }
@@ -184,7 +186,7 @@ namespace Tetris
 
     float Game::getDropSpeed() const
     {
-        return std::max(0.1f, DROP_INTERVAL - (stats.getLevel() - 1) * 0.1f);
+        return std::max(0.1f, GameConfig::DROP_INTERVAL - (stats.getLevel() - 1) * 0.1f);
     }
 
     void Game::handleEvents()
