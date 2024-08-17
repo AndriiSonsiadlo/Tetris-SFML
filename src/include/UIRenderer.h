@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
-#include "Enums.h"
 #include "TileManager.h"
 
 namespace Tetris
@@ -43,8 +42,8 @@ namespace Tetris
 
         bool initialize();
         void render(const GameController& controller);
-        void clear();
-        void display();
+        void clear() const;
+        void display() const;
 
     private:
         sf::RenderWindow& window_;
@@ -80,13 +79,9 @@ namespace Tetris
         void renderNextPiece(const GameController& controller);
         void renderUI(const GameController& controller);
         void renderGameState(const GameController& controller);
-        void renderMessageScreen(const std::string& message, sf::Color color = sf::Color::White);
+        void renderMessageScreen(const std::string& message, sf::Color color = sf::Color::White) const;
 
         void updateGameStats(const GameController& controller);
         sf::Vector2f centerText(const sf::Text& text, sf::Vector2f containerSize, sf::Vector2f containerPos);
-
-        static constexpr const char* ASSETS_DIR = "../assets/";
-        static constexpr const char* FONTS_DIR = "../fonts/";
-        static constexpr int VISIBLE_ROWS_OFFSET = 4;
     };
 }

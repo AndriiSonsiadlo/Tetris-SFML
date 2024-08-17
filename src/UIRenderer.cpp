@@ -5,6 +5,9 @@
 #include "Playfield.h"
 #include <iostream>
 
+#define ASSETS_DIR "../assets/"
+#define FONTS_DIR "../fonts/"
+
 namespace Tetris
 {
     UILayout::UILayout()
@@ -47,25 +50,25 @@ namespace Tetris
 
     bool UIRenderer::loadAssets()
     {
-        if (!font_.openFromFile(std::string(FONTS_DIR) + "200-x-light.otf"))
+        if (!font_.openFromFile(FONTS_DIR "200-x-light.otf"))
         {
             std::cerr << "Failed to load font" << std::endl;
             return false;
         }
 
-        if (!tileManager_.loadTileTexture(std::string(ASSETS_DIR) + "tiles.png"))
+        if (!tileManager_.loadTileTexture(ASSETS_DIR "tiles.png"))
         {
             std::cerr << "Failed to load tile texture" << std::endl;
             return false;
         }
 
-        if (!backgroundTexture_.loadFromFile(std::string(ASSETS_DIR) + "img4.jpg"))
+        if (!backgroundTexture_.loadFromFile(ASSETS_DIR "img4.jpg"))
         {
             std::cerr << "Failed to load background texture" << std::endl;
             return false;
         }
 
-        if (!foregroundTexture_.loadFromFile(std::string(ASSETS_DIR) + "img2.jpg"))
+        if (!foregroundTexture_.loadFromFile(ASSETS_DIR "img2.jpg"))
         {
             std::cerr << "Failed to load foreground texture" << std::endl;
             return false;
@@ -135,14 +138,14 @@ namespace Tetris
 
     void UIRenderer::setupSprites()
     {
-        backgroundSprite_->setTexture(backgroundTexture_);
+        backgroundSprite_ = std::make_unique<sf::Sprite>(backgroundTexture_);
         const sf::Vector2u bgSize = backgroundTexture_.getSize();
         backgroundSprite_->setScale(
             {layout_.windowSize.x / bgSize.x,
             layout_.windowSize.y / bgSize.y}
         );
 
-        foregroundSprite_->setTexture(foregroundTexture_);
+        foregroundSprite_ = std::make_unique<sf::Sprite>(foregroundTexture_);
         const sf::Vector2u fgSize = foregroundTexture_.getSize();
         float scaleX = playfieldBackground_.getSize().x / fgSize.x;
         float scaleY = playfieldBackground_.getSize().y / fgSize.y;
@@ -168,7 +171,7 @@ namespace Tetris
         window_.draw(playfieldBackground_);
         window_.draw(*foregroundSprite_);
 
-        for (int y = VISIBLE_ROWS_OFFSET; y < Playfield::HEIGHT; ++y)
+        for (int y = 0; y < Playfield::HEIGHT; ++y)
         {
             for (int x = 0; x < Playfield::WIDTH; ++x)
             {
@@ -177,7 +180,7 @@ namespace Tetris
                     auto sprite = tileManager_.createSprite(playfield.getCellColor(x, y));
                     sprite.setPosition(
                         {layout_.playFieldOffset.x + x * layout_.tileSize,
-                        layout_.playFieldOffset.y + (y - VISIBLE_ROWS_OFFSET) * layout_.tileSize}
+                        layout_.playFieldOffset.y + (y - 0) * layout_.tileSize}
                     );
                     window_.draw(sprite);
                 }
@@ -192,12 +195,12 @@ namespace Tetris
 
         for (const auto& pos : piece->getPositions())
         {
-            if (pos.y >= VISIBLE_ROWS_OFFSET)
+            if (pos.y >= 0)
             {
                 auto sprite = tileManager_.createSprite(piece->getColor());
                 sprite.setPosition(
                     {layout_.playFieldOffset.x + pos.x * layout_.tileSize,
-                    layout_.playFieldOffset.y + (pos.y - VISIBLE_ROWS_OFFSET) * layout_.tileSize}
+                    layout_.playFieldOffset.y + pos.y * layout_.tileSize}
                 );
                 window_.draw(sprite);
             }
@@ -261,7 +264,7 @@ namespace Tetris
         }
     }
 
-    void UIRenderer::renderMessageScreen(const std::string& message, sf::Color color)
+    void UIRenderer::renderMessageScreen(const std::string& message, const sf::Color color) const
     {
         sf::Text text(font_, message, 30);
         text.setFillColor(color);
@@ -288,21 +291,21 @@ namespace Tetris
         linesText_.setString("LINES\n" + std::to_string(stats.getLinesCleared()));
     }
 
-    sf::Vector2f UIRenderer::centerText(const sf::Text& text, sf::Vector2f containerSize, sf::Vector2f containerPos)
+    sf::Vector2f UIRenderer::centerText(const sf::Text& text, const sf::Vector2f containerSize, const sf::Vector2f containerPos)
     {
-        sf::FloatRect textBounds = text.getLocalBounds();
+        const sf::FloatRect textBounds = text.getLocalBounds();
         return sf::Vector2f(
 {            containerPos.x + (containerSize.x - textBounds.size.x) / 2.0f,
             containerPos.y + (containerSize.y - textBounds.size.y) / 2.0f}
         );
     }
 
-    void UIRenderer::clear()
+    void UIRenderer::clear() const
     {
         window_.clear();
     }
 
-    void UIRenderer::display()
+    void UIRenderer::display() const
     {
         window_.display();
     }
