@@ -3,26 +3,25 @@
 
 namespace Tetris
 {
-    InputHandler::InputHandler(GameController& controller)
-        : controller_(controller)
+    InputHandler::InputHandler(GameController& controller, sf::RenderWindow& window)
+        : controller_(controller), window_(window)
     {
         setupKeyBindings();
     }
 
-    void InputHandler::handleKeyPress(sf::Keyboard::Key key)
+    void InputHandler::handleKeyPress(const sf::Keyboard::Key key)
     {
-        auto it = keyBindings_.find(key);
-        if (it != keyBindings_.end())
+        if (const auto it = keyBindings_.find(key); it != keyBindings_.end())
         {
             it->second();
         }
     }
 
-    void InputHandler::processEvent(const sf::Event& event)
+    void InputHandler::processEvent(const std::optional<sf::Event>& event)
     {
-        if (event.is<sf::Event::KeyPressed>())
+        if (event->is<sf::Event::KeyPressed>())
         {
-            const auto& keyEvent = event.getIf<sf::Event::KeyPressed>();
+            const auto& keyEvent = event->getIf<sf::Event::KeyPressed>();
             handleKeyPress(keyEvent->code);
         }
     }
@@ -51,5 +50,6 @@ namespace Tetris
             else if (controller_.getGameState() == GameState::GameOver)
                 controller_.restartGame();
         };
+        keyBindings_[sf::Keyboard::Key::Escape]     = [this]() { window_.close(); };
     }
 }
