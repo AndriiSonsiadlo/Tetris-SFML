@@ -50,6 +50,6 @@ namespace Tetris
             else if (controller_.getGameState() == GameState::GameOver)
                 controller_.restartGame();
         };
-        keyBindings_[sf::Keyboard::Key::Escape]     = [this]() { window_.close(); };
+        keyBindings_[sf::Keyboard::Key::Escape] = [this]() { window_.close(); };
     }
 }

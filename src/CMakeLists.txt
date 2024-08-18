@@ -10,16 +10,13 @@ file(GLOB_RECURSE HEADERS
 add_executable(Tetris
         main.cpp
         ${HEADERS}
-        TileManager.cpp
-        TetrominoManager.cpp
-        TetrominoShape.cpp
-        GameController.cpp
-        GameStats.cpp
-        GameUI.cpp
         Game.cpp
-        Playfield.cpp
-        Tetromino.cpp
+        GameStats.cpp
+        GameController.cpp
         InputHandler.cpp
+        TileManager.cpp
+        Tetromino.cpp
+        Playfield.cpp
         UIRenderer.cpp
 )
 target_link_libraries(Tetris

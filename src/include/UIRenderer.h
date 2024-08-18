@@ -73,15 +73,15 @@ namespace Tetris
         void setupShapes();
         void setupSprites();
 
-        void renderBackground();
-        void renderPlayfield(const GameController& controller);
-        void renderCurrentPiece(const GameController& controller);
-        void renderNextPiece(const GameController& controller);
+        void renderBackground() const;
+        void renderPlayfield(const GameController& controller) const;
+        void renderCurrentPiece(const GameController& controller) const;
+        void renderNextPiece(const GameController& controller) const;
         void renderUI(const GameController& controller);
         void renderGameState(const GameController& controller);
         void renderMessageScreen(const std::string& message, sf::Color color = sf::Color::White) const;
 
         void updateGameStats(const GameController& controller);
-        sf::Vector2f centerText(const sf::Text& text, sf::Vector2f containerSize, sf::Vector2f containerPos);
+        static sf::Vector2f centerText(const sf::Text& text, sf::Vector2f containerSize, sf::Vector2f containerPos);
     };
 }

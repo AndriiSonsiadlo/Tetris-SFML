@@ -28,7 +28,7 @@ namespace Tetris
     public:
         Playfield();
 
-        [[nodiscard]] bool isInBounds(int x, int y) const;
+        [[nodiscard]] static bool isInBounds(int x, int y);
         [[nodiscard]] bool isCellEmpty(int x, int y) const;
 
         void setCell(int x, int y, Cell value, TileColor color = TileColor::CYAN);

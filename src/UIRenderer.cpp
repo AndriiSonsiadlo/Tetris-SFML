@@ -12,28 +12,28 @@ namespace Tetris
 {
     UILayout::UILayout()
         : windowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT)
-        , boardPosition(50.0f, 50.0f)
-        , boardSize(300.0f, 600.0f)
-        , sidePanelPosition(370.0f, 50.0f)
-        , sidePanelSize(200.0f, 600.0f)
-        , nextPanelPosition(390.0f, 450.0f)
-        , nextPanelSize(120.0f, 120.0f)
-        , levelTextPos(390.0f, 80.0f)
-        , scoreTextPos(390.0f, 180.0f)
-        , linesTextPos(390.0f, 280.0f)
-        , nextTextPos(420.0f, 420.0f)
-        , tileSize(30.0f)
-        , playFieldOffset(60.0f, 60.0f)
-        , nextPieceOffset(430.0f, 480.0f)
+          , boardPosition(50.0f, 50.0f)
+          , boardSize(300.0f, 600.0f)
+          , sidePanelPosition(370.0f, 50.0f)
+          , sidePanelSize(200.0f, 600.0f)
+          , nextPanelPosition(390.0f, 450.0f)
+          , nextPanelSize(120.0f, 120.0f)
+          , levelTextPos(390.0f, 80.0f)
+          , scoreTextPos(390.0f, 180.0f)
+          , linesTextPos(390.0f, 280.0f)
+          , nextTextPos(420.0f, 420.0f)
+          , tileSize(30.0f)
+          , playFieldOffset(60.0f, 60.0f)
+          , nextPieceOffset(430.0f, 480.0f)
     {
     }
 
     UIRenderer::UIRenderer(sf::RenderWindow& window)
         : window_(window)
-        , levelText_(font_)
-        , scoreText_(font_)
-        , linesText_(font_)
-        , nextText_(font_)
+          , levelText_(font_)
+          , scoreText_(font_)
+          , linesText_(font_)
+          , nextText_(font_)
     {
     }
 
@@ -138,17 +138,19 @@ namespace Tetris
 
     void UIRenderer::setupSprites()
     {
-        backgroundSprite_ = std::make_unique<sf::Sprite>(backgroundTexture_);
+        backgroundSprite_         = std::make_unique<sf::Sprite>(backgroundTexture_);
         const sf::Vector2u bgSize = backgroundTexture_.getSize();
         backgroundSprite_->setScale(
-            {layout_.windowSize.x / bgSize.x,
-            layout_.windowSize.y / bgSize.y}
+            {
+                layout_.windowSize.x / bgSize.x,
+                layout_.windowSize.y / bgSize.y
+            }
         );
 
-        foregroundSprite_ = std::make_unique<sf::Sprite>(foregroundTexture_);
+        foregroundSprite_         = std::make_unique<sf::Sprite>(foregroundTexture_);
         const sf::Vector2u fgSize = foregroundTexture_.getSize();
-        float scaleX = playfieldBackground_.getSize().x / fgSize.x;
-        float scaleY = playfieldBackground_.getSize().y / fgSize.y;
+        float scaleX              = playfieldBackground_.getSize().x / fgSize.x;
+        float scaleY              = playfieldBackground_.getSize().y / fgSize.y;
         foregroundSprite_->setScale({scaleX, scaleY});
         foregroundSprite_->setPosition(playfieldBackground_.getPosition());
     }
@@ -159,12 +161,12 @@ namespace Tetris
         renderGameState(controller);
     }
 
-    void UIRenderer::renderBackground()
+    void UIRenderer::renderBackground() const
     {
         window_.draw(*backgroundSprite_);
     }
 
-    void UIRenderer::renderPlayfield(const GameController& controller)
+    void UIRenderer::renderPlayfield(const GameController& controller) const
     {
         const auto& playfield = controller.getPlayfield();
 
@@ -179,8 +181,10 @@ namespace Tetris
                 {
                     auto sprite = tileManager_.createSprite(playfield.getCellColor(x, y));
                     sprite.setPosition(
-                        {layout_.playFieldOffset.x + x * layout_.tileSize,
-                        layout_.playFieldOffset.y + (y - 0) * layout_.tileSize}
+                        {
+                            layout_.playFieldOffset.x + x * layout_.tileSize,
+                            layout_.playFieldOffset.y + (y - 0) * layout_.tileSize
+                        }
                     );
                     window_.draw(sprite);
                 }
@@ -188,7 +192,7 @@ namespace Tetris
         }
     }
 
-    void UIRenderer::renderCurrentPiece(const GameController& controller)
+    void UIRenderer::renderCurrentPiece(const GameController& controller) const
     {
         const auto* piece = controller.getCurrentPiece();
         if (!piece) return;
@@ -199,28 +203,31 @@ namespace Tetris
             {
                 auto sprite = tileManager_.createSprite(piece->getColor());
                 sprite.setPosition(
-                    {layout_.playFieldOffset.x + pos.x * layout_.tileSize,
-                    layout_.playFieldOffset.y + pos.y * layout_.tileSize}
+                    {
+                        layout_.playFieldOffset.x + pos.x * layout_.tileSize,
+                        layout_.playFieldOffset.y + pos.y * layout_.tileSize
+                    }
                 );
                 window_.draw(sprite);
             }
         }
     }
 
-    void UIRenderer::renderNextPiece(const GameController& controller)
+    void UIRenderer::renderNextPiece(const GameController& controller) const
     {
         const auto* piece = controller.getNextPiece();
         if (!piece) return;
 
-        const float nextTileSize = 20.0f;
-
         for (const auto& pos : piece->getPositions())
         {
-            auto sprite = tileManager_.createSprite(piece->getColor());
+            constexpr float nextTileSize = 20.0f;
+            auto sprite                  = tileManager_.createSprite(piece->getColor());
             sprite.setScale({0.67f, 0.67f});
             sprite.setPosition(
-                {layout_.nextPieceOffset.x + pos.x * nextTileSize,
-                layout_.nextPieceOffset.y + pos.y * nextTileSize}
+                {
+                    layout_.nextPieceOffset.x + pos.x * nextTileSize,
+                    layout_.nextPieceOffset.y + pos.y * nextTileSize
+                }
             );
             window_.draw(sprite);
         }
@@ -271,8 +278,10 @@ namespace Tetris
 
         sf::FloatRect textBounds = text.getLocalBounds();
         text.setPosition(
-            {(layout_.windowSize.x - textBounds.size.x) / 2.0f,
-            (layout_.windowSize.y - textBounds.size.y) / 2.0f}
+            {
+                (layout_.windowSize.x - textBounds.size.x) / 2.0f,
+                (layout_.windowSize.y - textBounds.size.y) / 2.0f
+            }
         );
 
         sf::RectangleShape overlay(layout_.windowSize);
@@ -291,12 +300,15 @@ namespace Tetris
         linesText_.setString("LINES\n" + std::to_string(stats.getLinesCleared()));
     }
 
-    sf::Vector2f UIRenderer::centerText(const sf::Text& text, const sf::Vector2f containerSize, const sf::Vector2f containerPos)
+    sf::Vector2f UIRenderer::centerText(const sf::Text& text, const sf::Vector2f containerSize,
+                                        const sf::Vector2f containerPos)
     {
         const sf::FloatRect textBounds = text.getLocalBounds();
         return sf::Vector2f(
-{            containerPos.x + (containerSize.x - textBounds.size.x) / 2.0f,
-            containerPos.y + (containerSize.y - textBounds.size.y) / 2.0f}
+            {
+                containerPos.x + (containerSize.x - textBounds.size.x) / 2.0f,
+                containerPos.y + (containerSize.y - textBounds.size.y) / 2.0f
+            }
         );
     }
 

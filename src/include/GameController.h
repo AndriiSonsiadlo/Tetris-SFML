@@ -56,8 +56,8 @@ namespace Tetris
 
         void spawnNewPiece();
         void dropPiece();
-        void movePiece(int dx, int dy);
-        void rotatePiece();
+        void movePiece(int dx, int dy) const;
+        void rotatePiece() const;
         void lockPiece();
         float getDropSpeed() const;
         bool canProcessInput() const;

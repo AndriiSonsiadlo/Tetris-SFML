@@ -160,7 +160,7 @@ namespace Tetris
         }
     }
 
-    void GameController::movePiece(int dx, int dy)
+    void GameController::movePiece(const int dx, const int dy) const
     {
         if (!currentPiece_)
             return;
@@ -174,7 +174,7 @@ namespace Tetris
         }
     }
 
-    void GameController::rotatePiece()
+    void GameController::rotatePiece() const
     {
         if (!currentPiece_)
             return;
