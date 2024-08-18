@@ -17,6 +17,7 @@ namespace Tetris
         int rotationState;
 
         void updatePositions();
+        [[nodiscard]] sf::Vector2i rotatePoint(int x, int y, int rotation) const;
 
     public:
         Tetromino(TetrominoType type, sf::Vector2i startPos);

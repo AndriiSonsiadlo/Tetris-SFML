@@ -6,20 +6,32 @@ namespace Tetris
     Tetromino::Tetromino(const TetrominoType type, const sf::Vector2i startPos)
         : shape(type), offset(startPos), rotationState(0)
     {
-        const TetrominoShape shape(type);
         updatePositions();
     }
 
     void Tetromino::updatePositions()
     {
         const auto coords = shape.getCoordinates();
-
         positions.clear();
         positions.reserve(4);
 
         for (const auto& coord : coords)
         {
-            positions.emplace_back(coord.x + offset.x, coord.y + offset.y);
+            sf::Vector2i rotatedCoord = rotatePoint(coord.x, coord.y, rotationState);
+            positions.emplace_back(rotatedCoord.x + offset.x, rotatedCoord.y + offset.y);
+        }
+    }
+
+    sf::Vector2i Tetromino::rotatePoint(int x, int y, int rotation) const
+    {
+        // Apply rotation matrix for 90-degree increments
+        switch (rotation % 4)
+        {
+            case 0: return {x, y};   // 0 degrees
+            case 1: return {-y, x};  // 90 degrees
+            case 2: return {-x, -y}; // 180 degrees
+            case 3: return {y, -x};  // 270 degrees
+            default: return {x, y};
         }
     }
 
@@ -38,36 +50,19 @@ namespace Tetris
 
     std::vector<sf::Vector2i> Tetromino::getRotatedPositions() const
     {
-        std::vector<sf::Vector2i> rotated;
-        rotated.reserve(4);
+        std::vector<sf::Vector2i> rotatedPositions;
+        rotatedPositions.reserve(4);
 
-        const int angle = (rotationState + 1) % 4;
+        const auto coords      = shape.getCoordinates();
+        const int nextRotation = (rotationState + 1) % 4;
 
-        for (const auto& pos : positions)
+        for (const auto& coord : coords)
         {
-            sf::Vector2i localPos = pos - offset;
-            sf::Vector2i rotatedLocal;
-
-            switch (angle)
-            {
-                case 1: // 90 degrees
-                    rotatedLocal = sf::Vector2i(-localPos.y, localPos.x);
-                    break;
-                case 2: // 180 degrees
-                    rotatedLocal = sf::Vector2i(-localPos.x, -localPos.y);
-                    break;
-                case 3: // 270 degrees
-                    rotatedLocal = sf::Vector2i(localPos.y, -localPos.x);
-                    break;
-                default: // 0 degrees
-                    rotatedLocal = localPos;
-                    break;
-            }
-
-            rotated.emplace_back(rotatedLocal + offset);
+            const sf::Vector2i rotatedCoord = rotatePoint(coord.x, coord.y, nextRotation);
+            rotatedPositions.emplace_back(rotatedCoord.x + offset.x, rotatedCoord.y + offset.y);
         }
 
-        return rotated;
+        return rotatedPositions;
     }
 
     void Tetromino::setPosition(const sf::Vector2i newOffset)
