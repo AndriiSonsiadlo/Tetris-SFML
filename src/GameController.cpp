@@ -186,6 +186,40 @@ namespace Tetris
         }
     }
 
+    bool GameController::tryRotateWithWallKick() const
+    {
+        if (!currentPiece_) return false;
+
+        const auto originalPositions = currentPiece_->getPositions();
+        const auto rotatedPositions = currentPiece_->getRotatedPositions();
+
+        if (playfield_.canPlacePiece(rotatedPositions))
+        {
+            currentPiece_->rotate();
+            return true;
+        }
+
+        std::vector<sf::Vector2i> kicks = {{-1, 0}, {1, 0}, {0, -1}, {-1, -1}, {1, -1}};
+        for (const auto& kick : kicks)
+        {
+            std::vector<sf::Vector2i> kickedPositions;
+            for (const auto& pos : rotatedPositions)
+            {
+                kickedPositions.emplace_back(pos.x + kick.x, pos.y + kick.y);
+            }
+
+            if (playfield_.canPlacePiece(kickedPositions))
+            {
+                currentPiece_->rotate();
+                currentPiece_->move(kick.x, kick.y);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     void GameController::lockPiece()
     {
         if (!currentPiece_)

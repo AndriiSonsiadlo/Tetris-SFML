@@ -137,11 +137,11 @@ namespace Tetris
 
     bool Playfield::isGameOver() const
     {
-        for (int y = 0; y < 4; ++y)
+        for (int y = 0; y < 2; ++y)
         {
             for (int x = 0; x < WIDTH; ++x)
             {
-                if (grid[y][x] != Cell::Empty)
+                if (grid[y][x] == Cell::Filled)
                     return true;
             }
         }

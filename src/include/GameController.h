@@ -58,6 +58,7 @@ namespace Tetris
         void dropPiece();
         void movePiece(int dx, int dy) const;
         void rotatePiece() const;
+        bool tryRotateWithWallKick() const;
         void lockPiece();
         float getDropSpeed() const;
         bool canProcessInput() const;
@@ -65,6 +66,6 @@ namespace Tetris
 
         static constexpr float INPUT_DELAY = 0.1f;
         static constexpr int SPAWN_X = 4;
-        static constexpr int SPAWN_Y = 0;
+        static constexpr int SPAWN_Y = 1;
     };
 }
