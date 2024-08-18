@@ -1,18 +1,12 @@
 #pragma once
 
-
 #include <array>
+#include <vector>
 
 #include "TetrominoConst.h"
 
-
 namespace Tetris
 {
-    struct Point;
-
-    using Shape       = std::array<int, 4>;
-    using Coordinates = std::array<Point, 4>;
-
     struct Point
     {
         int x;
@@ -33,33 +27,26 @@ namespace Tetris
         TetrominoType shapeType;
 
     public:
-        explicit TetrominoShape(const TetrominoType type)
-            : shapeType(type)
+        explicit TetrominoShape(const TetrominoType type) : shapeType(type)
         {
         }
 
-        [[nodiscard]] Coordinates getCoordinates() const
+        [[nodiscard]] std::vector<Point> getCoordinates() const
         {
-            Coordinates shapeCoordinates{};
+            std::vector<Point> coordinates;
+            const auto& shape = TetrominoConst::TETROMINO_SHAPES.at(shapeType);
 
-            const auto shape = getShape();
-            for (int i = 0; i < shape.size(); ++i)
+            for (const auto& coord : shape)
             {
-                const int x         = (shape[i] % 2);
-                const int y         = (shape[i] / 2);
-                shapeCoordinates[i] = {x, y};
+                coordinates.emplace_back(coord[0], coord[1]);
             }
-            return shapeCoordinates;
-        }
 
-        [[nodiscard]] Shape getShape() const
-        {
-            return TetrominoConst::TETROMINO_SHAPE_MAP[shapeType];
+            return coordinates;
         }
 
         [[nodiscard]] TileColor getColor() const
         {
-            return TetrominoConst::TETROMINO_COLOR_MAP[shapeType];
+            return TetrominoConst::TETROMINO_COLOR_MAP.at(shapeType);
         }
 
         [[nodiscard]] TetrominoType getType() const
