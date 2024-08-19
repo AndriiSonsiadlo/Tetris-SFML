@@ -24,7 +24,6 @@ namespace Tetris
 
     sf::Vector2i Tetromino::rotatePoint(int x, int y, int rotation) const
     {
-        // Apply rotation matrix for 90-degree increments
         switch (rotation % 4)
         {
             case 0: return {x, y};   // 0 degrees

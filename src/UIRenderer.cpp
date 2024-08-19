@@ -12,19 +12,19 @@ namespace Tetris
 {
     UILayout::UILayout()
         : windowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT)
-          , boardPosition(50.0f, 50.0f)
-          , boardSize(300.0f, 600.0f)
-          , sidePanelPosition(370.0f, 50.0f)
-          , sidePanelSize(200.0f, 600.0f)
-          , nextPanelPosition(390.0f, 450.0f)
+          , boardPosition(80.0f, 60.0f)
+          , boardSize(320.0f, 640.0f)
+          , sidePanelPosition(420.0f, 60.0f)
+          , sidePanelSize(160.0f, 640.0f)
+          , nextPanelPosition(440.0f, 80.0f)
           , nextPanelSize(120.0f, 120.0f)
-          , levelTextPos(390.0f, 80.0f)
-          , scoreTextPos(390.0f, 180.0f)
-          , linesTextPos(390.0f, 280.0f)
-          , nextTextPos(420.0f, 420.0f)
+          , levelTextPos(440.0f, 220.0f)
+          , scoreTextPos(440.0f, 300.0f)
+          , linesTextPos(440.0f, 380.0f)
+          , nextTextPos(480.0f, 50.0f)
           , tileSize(30.0f)
-          , playFieldOffset(60.0f, 60.0f)
-          , nextPieceOffset(430.0f, 480.0f)
+          , playFieldOffset(88.0f, 68.0f)
+          , nextPieceOffset(470.0f, 110.0f)
     {
     }
 
@@ -68,7 +68,7 @@ namespace Tetris
             return false;
         }
 
-        if (!foregroundTexture_.loadFromFile(ASSETS_DIR "img2.jpg"))
+        if (!foregroundTexture_.loadFromFile(ASSETS_DIR "img9.jpg"))
         {
             std::cerr << "Failed to load foreground texture" << std::endl;
             return false;
@@ -113,11 +113,19 @@ namespace Tetris
 
     void UIRenderer::setupShapes()
     {
-        gameBoard_.setSize(layout_.boardSize);
-        gameBoard_.setPosition(layout_.boardPosition);
-        gameBoard_.setFillColor(sf::Color(20, 20, 40, 100));
-        gameBoard_.setOutlineColor(sf::Color(100, 150, 200, 200));
-        gameBoard_.setOutlineThickness(2.0f);
+        float X      = static_cast<float>(GameConfig::WINDOW_WIDTH) / 800.0f;
+        float scaleY = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 600.0f;
+
+        gameBoard_.setSize({layout_.boardSize.x * scaleX, layout_.boardSize.y * scaleY});
+        gameBoard_.setPosition({layout_.boardPosition.x * scaleX, layout_.boardPosition.y * scaleY});
+        gameBoard_.setFillColor(sf::Color(20, 20, 40, 180));
+        gameBoard_.setOutlineColor(sf::Color(100, 150, 200, 255));
+        gameBoard_.setOutlineThickness(3.0f);
+
+        sf::RectangleShape shadow = gameBoard_;
+        shadow.setPosition({gameBoard_.getPosition().x + 5, gameBoard_.getPosition().y + 5});
+        shadow.setFillColor(sf::Color(0, 0, 0, 100));
+        shadow.setOutlineThickness(0);
 
         sidePanel_.setSize(layout_.sidePanelSize);
         sidePanel_.setPosition(layout_.sidePanelPosition);
@@ -171,7 +179,22 @@ namespace Tetris
         const auto& playfield = controller.getPlayfield();
 
         window_.draw(playfieldBackground_);
-        window_.draw(*foregroundSprite_);
+
+        for (int x = 0; x <= Playfield::WIDTH; ++x)
+        {
+            sf::RectangleShape line(sf::Vector2f(1.0f, layout_.boardSize.y - 16.0f));
+            line.setPosition({layout_.playFieldOffset.x + x * layout_.tileSize, layout_.playFieldOffset.y});
+            line.setFillColor(sf::Color(100, 100, 100, 50));
+            window_.draw(line);
+        }
+
+        for (int y = 0; y <= Playfield::HEIGHT; ++y)
+        {
+            sf::RectangleShape line(sf::Vector2f(layout_.boardSize.x - 16.0f, 1.0f));
+            line.setPosition({layout_.playFieldOffset.x, layout_.playFieldOffset.y + y * layout_.tileSize});
+            line.setFillColor(sf::Color(100, 100, 100, 50));
+            window_.draw(line);
+        }
 
         for (int y = 0; y < Playfield::HEIGHT; ++y)
         {
@@ -180,12 +203,10 @@ namespace Tetris
                 if (playfield.getCell(x, y) == Playfield::Cell::Filled)
                 {
                     auto sprite = tileManager_.createSprite(playfield.getCellColor(x, y));
-                    sprite.setPosition(
-                        {
-                            layout_.playFieldOffset.x + x * layout_.tileSize,
-                            layout_.playFieldOffset.y + (y - 0) * layout_.tileSize
-                        }
-                    );
+                    sprite.setPosition({
+                        layout_.playFieldOffset.x + x * layout_.tileSize,
+                        layout_.playFieldOffset.y + y * layout_.tileSize
+                    });
                     window_.draw(sprite);
                 }
             }
@@ -199,15 +220,13 @@ namespace Tetris
 
         for (const auto& pos : piece->getPositions())
         {
-            if (pos.y >= 0)
+            if (pos.x >= 0 && pos.x < Playfield::WIDTH && pos.y >= 0 && pos.y < Playfield::HEIGHT)
             {
                 auto sprite = tileManager_.createSprite(piece->getColor());
-                sprite.setPosition(
-                    {
-                        layout_.playFieldOffset.x + pos.x * layout_.tileSize,
-                        layout_.playFieldOffset.y + pos.y * layout_.tileSize
-                    }
-                );
+                sprite.setPosition({
+                    layout_.playFieldOffset.x + pos.x * layout_.tileSize,
+                    layout_.playFieldOffset.y + pos.y * layout_.tileSize
+                });
                 window_.draw(sprite);
             }
         }
@@ -218,17 +237,17 @@ namespace Tetris
         const auto* piece = controller.getNextPiece();
         if (!piece) return;
 
+        sf::Vector2f centerOffset(2.0f, 2.0f);
+        constexpr float nextTileSize = 20.0f;
+
         for (const auto& pos : piece->getPositions())
         {
-            constexpr float nextTileSize = 20.0f;
-            auto sprite                  = tileManager_.createSprite(piece->getColor());
-            sprite.setScale({0.67f, 0.67f});
-            sprite.setPosition(
-                {
-                    layout_.nextPieceOffset.x + pos.x * nextTileSize,
-                    layout_.nextPieceOffset.y + pos.y * nextTileSize
-                }
-            );
+            auto sprite = tileManager_.createSprite(piece->getColor());
+            sprite.setScale({0.625f, 0.625f});
+            sprite.setPosition({
+                layout_.nextPieceOffset.x + (pos.x + centerOffset.x) * nextTileSize,
+                layout_.nextPieceOffset.y + (pos.y + centerOffset.y) * nextTileSize
+            });
             window_.draw(sprite);
         }
     }
