@@ -50,10 +50,14 @@ namespace Tetris
         UILayout layout_;
         TileManager tileManager_;
 
-        sf::Font font_;
+        sf::Font fontText_;
+        sf::Font fontNumber_;
         sf::Texture backgroundTexture_;
         sf::Texture foregroundTexture_;
 
+        sf::Text levelNumberText_;
+        sf::Text scoreNumberText_;
+        sf::Text linesNumberText_;
         sf::Text levelText_;
         sf::Text scoreText_;
         sf::Text linesText_;

@@ -18,6 +18,7 @@ namespace Tetris
           , sidePanelSize(160.0f, 600.0f)
           , nextPanelPosition(440.0f, 140.0f)
           , nextPanelSize(120.0f, 120.0f)
+          , nextTextPos(470.0f, 100.0f)
           , levelTextPos(440.0f, 300.0f)
           , scoreTextPos(440.0f, 370.0f)
           , linesTextPos(440.0f, 440.0f)
@@ -34,6 +35,14 @@ namespace Tetris
           , scoreText_(font_)
           , linesText_(font_)
           , nextText_(font_)
+          , levelNumberText_(fontText_)
+          , scoreNumberText_(fontText_)
+          , linesNumberText_(fontText_)
+          , timeNumberText_(fontText_)
+          , levelText_(fontText_)
+          , scoreText_(fontText_)
+          , linesText_(fontText_)
+          , nextText_(fontText_)
     {
     }
 
@@ -50,7 +59,13 @@ namespace Tetris
 
     bool UIRenderer::loadAssets()
     {
-        if (!font_.openFromFile(FONTS_DIR "200-x-light.otf"))
+        if (!fontText_.openFromFile(FONTS_DIR "300-light.otf"))
+        {
+            std::cerr << "Failed to load font" << std::endl;
+            return false;
+        }
+
+        if (!fontNumber_.openFromFile(FONTS_DIR "200-light.otf"))
         {
             std::cerr << "Failed to load font" << std::endl;
             return false;
@@ -86,55 +101,73 @@ namespace Tetris
 
     void UIRenderer::setupText()
     {
-        levelText_.setFont(font_);
-        levelText_.setString("LEVEL\n1");
-        levelText_.setCharacterSize(24);
+        levelNumberText_.setFont(fontNumber_);
+        levelNumberText_.setString("1");
+        levelNumberText_.setCharacterSize(24);
+        levelNumberText_.setFillColor(sf::Color::White);
+        levelNumberText_.setPosition(layout_.levelTextPos);
+
+        levelText_.setFont(fontText_);
+        levelText_.setString("LEVEL");
+        levelText_.setCharacterSize(16);
         levelText_.setFillColor(sf::Color::White);
-        levelText_.setPosition(layout_.levelTextPos);
+        levelText_.setPosition({layout_.levelTextPos.x, layout_.levelTextPos.y + 30.0f});
 
-        scoreText_.setFont(font_);
-        scoreText_.setString("SCORE\n0");
-        scoreText_.setCharacterSize(24);
+        scoreNumberText_.setFont(fontNumber_);
+        scoreNumberText_.setString("0");
+        scoreNumberText_.setCharacterSize(24);
+        scoreNumberText_.setFillColor(sf::Color::White);
+        scoreNumberText_.setPosition(layout_.scoreTextPos);
+
+        scoreText_.setFont(fontText_);
+        scoreText_.setString("SCORE");
+        scoreText_.setCharacterSize(16);
         scoreText_.setFillColor(sf::Color::White);
-        scoreText_.setPosition(layout_.scoreTextPos);
+        scoreText_.setPosition({layout_.scoreTextPos.x, layout_.scoreTextPos.y + 30.0f});
 
-        linesText_.setFont(font_);
-        linesText_.setString("LINES\n0");
-        linesText_.setCharacterSize(24);
+        linesNumberText_.setFont(fontNumber_);
+        linesNumberText_.setString("0");
+        linesNumberText_.setCharacterSize(24);
+        linesNumberText_.setFillColor(sf::Color::White);
+        linesNumberText_.setPosition(layout_.linesTextPos);
+
+        linesText_.setFont(fontText_);
+        linesText_.setString("LINES");
+        linesText_.setCharacterSize(16);
         linesText_.setFillColor(sf::Color::White);
-        linesText_.setPosition(layout_.linesTextPos);
+        linesText_.setPosition({layout_.linesTextPos.x, layout_.linesTextPos.y + 30.0f});
 
-        nextText_.setFont(font_);
+        nextText_.setFont(fontText_);
         nextText_.setString("NEXT");
         nextText_.setCharacterSize(20);
         nextText_.setFillColor(sf::Color::White);
         nextText_.setPosition(layout_.nextTextPos);
     }
 
-void UIRenderer::setupShapes()
-{
-    gameBoard_.setSize({layout_.boardSize.x, layout_.boardSize.y});
-    gameBoard_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
-    gameBoard_.setFillColor(sf::Color(25, 25, 50, 200));
-    gameBoard_.setOutlineColor(sf::Color(100, 150, 220, 220));
-    gameBoard_.setOutlineThickness(2.0f);
+    void UIRenderer::setupShapes()
+    {
+        gameBoard_.setSize({layout_.boardSize.x, layout_.boardSize.y});
+        gameBoard_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
+        gameBoard_.setFillColor(sf::Color(25, 25, 50, 200));
+        gameBoard_.setOutlineColor(sf::Color(100, 150, 220, 220));
+        gameBoard_.setOutlineThickness(2.0f);
 
-    sidePanel_.setSize(layout_.sidePanelSize);
-    sidePanel_.setPosition(layout_.sidePanelPosition);
-    sidePanel_.setFillColor(sf::Color(20, 20, 40, 180));
-    sidePanel_.setOutlineColor(sf::Color(100, 150, 220, 220));
-    sidePanel_.setOutlineThickness(2.0f);
+        sidePanel_.setSize(layout_.sidePanelSize);
+        sidePanel_.setPosition(layout_.sidePanelPosition);
+        sidePanel_.setFillColor(sf::Color(20, 20, 40, 180));
+        sidePanel_.setOutlineColor(sf::Color(100, 150, 220, 220));
+        sidePanel_.setOutlineThickness(2.0f);
 
-    nextPiecePanel_.setSize(layout_.nextPanelSize);
-    nextPiecePanel_.setPosition(layout_.nextPanelPosition);
-    nextPiecePanel_.setFillColor(sf::Color(35, 35, 60, 200));
-    nextPiecePanel_.setOutlineColor(sf::Color(120, 180, 250, 220));
-    nextPiecePanel_.setOutlineThickness(1.0f);
+        nextPiecePanel_.setSize(layout_.nextPanelSize);
+        nextPiecePanel_.setPosition(layout_.nextPanelPosition);
+        nextPiecePanel_.setFillColor(sf::Color(35, 35, 60, 200));
+        nextPiecePanel_.setOutlineColor(sf::Color(120, 180, 250, 220));
+        nextPiecePanel_.setOutlineThickness(1.0f);
 
-    playfieldBackground_.setSize(sf::Vector2f(layout_.boardSize.x, layout_.boardSize.y));
-    playfieldBackground_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
-    playfieldBackground_.setFillColor(sf::Color(255, 255, 255, 0));
-}
+        playfieldBackground_.setSize(sf::Vector2f(layout_.boardSize.x, layout_.boardSize.y));
+        playfieldBackground_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
+        playfieldBackground_.setFillColor(sf::Color(255, 255, 255, 0));
+    }
 
     void UIRenderer::setupSprites()
     {
@@ -234,8 +267,17 @@ void UIRenderer::setupShapes()
         const auto* piece = controller.getNextPiece();
         if (!piece) return;
 
-        sf::Vector2f centerOffset(2.0f, 2.0f);
         constexpr float nextTileSize = 20.0f;
+
+        sf::Vector2f pieceCenter = piece->getCenterPosition();
+
+        sf::Vector2f panelCenter(
+            layout_.nextPanelPosition.x + layout_.nextPanelSize.x / 2.0f,
+            layout_.nextPanelPosition.y + layout_.nextPanelSize.y / 2.0f
+        );
+
+        float offsetX = panelCenter.x - (pieceCenter.x * nextTileSize);
+        float offsetY = panelCenter.y - (pieceCenter.y * nextTileSize);
 
         for (const auto& pos : piece->getPositions())
         {
@@ -257,8 +299,11 @@ void UIRenderer::setupShapes()
 
         updateGameStats(controller);
         window_.draw(levelText_);
+        window_.draw(levelNumberText_);
         window_.draw(scoreText_);
+        window_.draw(scoreNumberText_);
         window_.draw(linesText_);
+        window_.draw(linesNumberText_);
         window_.draw(nextText_);
 
         renderForeground();
@@ -279,18 +324,18 @@ void UIRenderer::setupShapes()
                 break;
             case GameState::Pause:
                 renderUI(controller);
-                renderMessageScreen("Game Paused\nPress P to Resume", sf::Color::Yellow);
+                renderMessageScreen("Game Paused\n\nPress P to Resume", sf::Color::Yellow);
                 break;
             case GameState::GameOver:
                 renderUI(controller);
-                renderMessageScreen("Game Over!\nPress Enter to Restart", sf::Color::Red);
+                renderMessageScreen("Game Over!\n\nPress Enter to Restart", sf::Color::Red);
                 break;
         }
     }
 
     void UIRenderer::renderMessageScreen(const std::string& message, const sf::Color color) const
     {
-        sf::Text text(font_, message, 30);
+        sf::Text text(fontText_, message, 30);
         text.setFillColor(color);
 
         const sf::FloatRect textBounds = text.getLocalBounds();
@@ -302,7 +347,7 @@ void UIRenderer::setupShapes()
         );
 
         sf::RectangleShape overlay(layout_.windowSize);
-        overlay.setFillColor(sf::Color(0, 0, 0, 128));
+        overlay.setFillColor(sf::Color(0, 0, 0, 150));
         window_.draw(overlay);
 
         window_.draw(text);
@@ -315,6 +360,9 @@ void UIRenderer::setupShapes()
         levelText_.setString("LEVEL\n" + std::to_string(stats.getLevel()));
         scoreText_.setString("SCORE\n" + std::to_string(stats.getScore()));
         linesText_.setString("LINES\n" + std::to_string(stats.getLinesCleared()));
+        levelNumberText_.setString(std::to_string(stats.getLevel()));
+        scoreNumberText_.setString(std::to_string(stats.getScore()));
+        linesNumberText_.setString(std::to_string(stats.getLinesCleared()));
     }
 
     sf::Vector2f UIRenderer::centerText(const sf::Text& text, const sf::Vector2f containerSize,
