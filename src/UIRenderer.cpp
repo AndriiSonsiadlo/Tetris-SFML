@@ -22,7 +22,7 @@ namespace Tetris
           , levelTextPos(440.0f, 300.0f)
           , scoreTextPos(440.0f, 370.0f)
           , linesTextPos(440.0f, 440.0f)
-          , nextTextPos(480.0f, 100.0f)
+          , timeTextPos(440.0f, 510.0f)
           , tileSize(30.0f)
           , playFieldOffset(80.0f, 80.0f)
           , nextPieceOffset(470.0f, 110.0f)
@@ -31,10 +31,6 @@ namespace Tetris
 
     UIRenderer::UIRenderer(sf::RenderWindow& window)
         : window_(window)
-          , levelText_(font_)
-          , scoreText_(font_)
-          , linesText_(font_)
-          , nextText_(font_)
           , levelNumberText_(fontText_)
           , scoreNumberText_(fontText_)
           , linesNumberText_(fontText_)
@@ -42,6 +38,7 @@ namespace Tetris
           , levelText_(fontText_)
           , scoreText_(fontText_)
           , linesText_(fontText_)
+          , timeText_(fontText_)
           , nextText_(fontText_)
     {
     }
@@ -136,6 +133,18 @@ namespace Tetris
         linesText_.setCharacterSize(16);
         linesText_.setFillColor(sf::Color::White);
         linesText_.setPosition({layout_.linesTextPos.x, layout_.linesTextPos.y + 30.0f});
+
+        timeNumberText_.setFont(fontNumber_);
+        timeNumberText_.setString("0:00");
+        timeNumberText_.setCharacterSize(24);
+        timeNumberText_.setFillColor(sf::Color::White);
+        timeNumberText_.setPosition(layout_.timeTextPos);
+
+        timeText_.setFont(fontText_);
+        timeText_.setString("TIME");
+        timeText_.setCharacterSize(16);
+        timeText_.setFillColor(sf::Color::White);
+        timeText_.setPosition({layout_.timeTextPos.x, layout_.timeTextPos.y + 30.0f});
 
         nextText_.setFont(fontText_);
         nextText_.setString("NEXT");
@@ -284,8 +293,8 @@ namespace Tetris
             auto sprite = tileManager_.createSprite(piece->getColor());
             sprite.setScale({0.625f, 0.625f});
             sprite.setPosition({
-                layout_.nextPieceOffset.x + (pos.x + centerOffset.x) * nextTileSize,
-                layout_.nextPieceOffset.y + (pos.y + centerOffset.y) * nextTileSize
+                offsetX + pos.x * nextTileSize,
+                offsetY + pos.y * nextTileSize
             });
             window_.draw(sprite);
         }
@@ -304,6 +313,8 @@ namespace Tetris
         window_.draw(scoreNumberText_);
         window_.draw(linesText_);
         window_.draw(linesNumberText_);
+        window_.draw(timeText_);
+        window_.draw(timeNumberText_);
         window_.draw(nextText_);
 
         renderForeground();
@@ -357,12 +368,17 @@ namespace Tetris
     {
         const auto& stats = controller.getStats();
 
-        levelText_.setString("LEVEL\n" + std::to_string(stats.getLevel()));
-        scoreText_.setString("SCORE\n" + std::to_string(stats.getScore()));
-        linesText_.setString("LINES\n" + std::to_string(stats.getLinesCleared()));
         levelNumberText_.setString(std::to_string(stats.getLevel()));
         scoreNumberText_.setString(std::to_string(stats.getScore()));
         linesNumberText_.setString(std::to_string(stats.getLinesCleared()));
+
+        int seconds = static_cast<int>(stats.getGameTimeSeconds());
+        int minutes = seconds / 60;
+        seconds %= 60;
+        timeNumberText_.setString(
+            std::to_string(minutes) + ":" +
+            (seconds < 10 ? "0" : "") + std::to_string(seconds)
+        );
     }
 
     sf::Vector2f UIRenderer::centerText(const sf::Text& text, const sf::Vector2f containerSize,

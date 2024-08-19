@@ -17,10 +17,10 @@ namespace Tetris
         static constexpr unsigned int LEVEL_THRESHOLD = 4;
 
     private:
-        unsigned int score_{0};
         unsigned int level_{1};
+        unsigned int score_{0};
         unsigned int linesCleared_{0};
-        unsigned int gameTime_{0}; // in seconds
+        float gameTime_{0.0f}; // in seconds
 
         void updateScore(unsigned int lines);
         void checkLevelUp(unsigned int oldLines);
@@ -31,10 +31,9 @@ namespace Tetris
         [[nodiscard]] unsigned int getScore() const { return score_; }
         [[nodiscard]] unsigned int getLevel() const { return level_; }
         [[nodiscard]] unsigned int getLinesCleared() const { return linesCleared_; }
-        [[nodiscard]] unsigned int getGameTimeSeconds() const { return gameTime_; }
+        [[nodiscard]] unsigned int getGameTimeSeconds() const { return static_cast<unsigned int>(gameTime_); }
 
+        void updateGameTime(const float deltaTime) { gameTime_ += deltaTime; }
         void processLinesCleared(unsigned int lineCount);
-
-        void updateGameTime(unsigned int seconds);
     };
 }

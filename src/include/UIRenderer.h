@@ -25,6 +25,7 @@ namespace Tetris
         sf::Vector2f levelTextPos;
         sf::Vector2f scoreTextPos;
         sf::Vector2f linesTextPos;
+        sf::Vector2f timeTextPos;
         sf::Vector2f nextTextPos;
 
         float tileSize;
@@ -61,6 +62,8 @@ namespace Tetris
         sf::Text levelText_;
         sf::Text scoreText_;
         sf::Text linesText_;
+        sf::Text timeNumberText_;
+        sf::Text timeText_;
         sf::Text nextText_;
 
         sf::RectangleShape gameBoard_;

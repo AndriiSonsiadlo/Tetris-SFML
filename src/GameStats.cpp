@@ -41,9 +41,4 @@ namespace Tetris
         linesCleared_ += lineCount;
         checkLevelUp(oldLines);
     }
-
-    void GameStats::updateGameTime(const unsigned int seconds)
-    {
-        gameTime_ += seconds;
-    }
 }

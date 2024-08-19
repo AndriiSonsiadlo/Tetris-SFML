@@ -26,7 +26,7 @@ namespace Tetris
         if (state_ != GameState::Play)
             return;
 
-        stats_.updateGameTime(static_cast<unsigned int>(deltaTime));
+        stats_.updateGameTime(deltaTime);
 
         if (dropClock_.getElapsedTime().asSeconds() >= getDropSpeed())
         {
