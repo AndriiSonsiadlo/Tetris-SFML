@@ -136,7 +136,7 @@ namespace Tetris
         auto nextType = generateRandomTetrominoType();
         nextPiece_    = std::make_unique<Tetromino>(nextType, sf::Vector2i(0, 0));
 
-        if (!playfield_.canPlacePiece(currentPiece_->getPositions()))
+        if (!playfield_.canPlacePiece(currentPiece_->getPositions()) || playfield_.isGameOver())
         {
             state_ = GameState::GameOver;
         }
@@ -179,18 +179,13 @@ namespace Tetris
         if (!currentPiece_)
             return;
 
-        if (const auto rotatedPositions = currentPiece_->getRotatedPositions();
-            playfield_.canPlacePiece(rotatedPositions))
-        {
-            currentPiece_->rotate();
-        }
+        tryRotateWithWallKick();
     }
 
     bool GameController::tryRotateWithWallKick() const
     {
         if (!currentPiece_) return false;
 
-        const auto originalPositions = currentPiece_->getPositions();
         const auto rotatedPositions = currentPiece_->getRotatedPositions();
 
         if (playfield_.canPlacePiece(rotatedPositions))

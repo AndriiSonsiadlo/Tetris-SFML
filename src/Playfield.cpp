@@ -56,6 +56,13 @@ namespace Tetris
     {
         for (const auto& pos : coords)
         {
+            if (pos.y < 0)
+            {
+                if (pos.x < 0 || pos.x >= WIDTH)
+                    return false;
+                continue;
+            }
+
             if (!isInBounds(pos.x, pos.y) || !isCellEmpty(pos.x, pos.y))
             {
                 return false;
@@ -68,7 +75,10 @@ namespace Tetris
     {
         for (const auto& pos : coords)
         {
-            setCell(pos.x, pos.y, Cell::Filled, color);
+            if (isInBounds(pos.x, pos.y))
+            {
+                setCell(pos.x, pos.y, Cell::Filled, color);
+            }
         }
     }
 
@@ -76,7 +86,10 @@ namespace Tetris
     {
         for (const auto& pos : coords)
         {
-            setCell(pos.x, pos.y, Cell::Empty);
+            if (isInBounds(pos.x, pos.y))
+            {
+                setCell(pos.x, pos.y, Cell::Empty);
+            }
         }
     }
 
@@ -137,13 +150,10 @@ namespace Tetris
 
     bool Playfield::isGameOver() const
     {
-        for (int y = 0; y < 2; ++y)
+        for (int x = 0; x < WIDTH; ++x)
         {
-            for (int x = 0; x < WIDTH; ++x)
-            {
-                if (grid[y][x] == Cell::Filled)
-                    return true;
-            }
+            if (grid[0][x] == Cell::Filled)
+                return true;
         }
         return false;
     }

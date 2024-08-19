@@ -24,6 +24,9 @@ namespace Tetris
 
     sf::Vector2i Tetromino::rotatePoint(int x, int y, const int rotation) const
     {
+        if (shape.getType() == TetrominoType::O)
+            return {x, y};
+
         switch (rotation % 4)
         {
             case 0: return {x, y};   // 0 degrees

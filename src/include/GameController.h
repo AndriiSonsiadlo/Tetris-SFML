@@ -66,6 +66,6 @@ namespace Tetris
 
         static constexpr float INPUT_DELAY = 0.1f;
         static constexpr int SPAWN_X = 4;
-        static constexpr int SPAWN_Y = 1;
+        static constexpr int SPAWN_Y = -1;
     };
 }
