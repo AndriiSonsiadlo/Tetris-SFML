@@ -3,7 +3,7 @@
 namespace Tetris
 {
     struct GameConfig {
-        static constexpr int WINDOW_WIDTH = 600;
+        static constexpr int WINDOW_WIDTH = 640;
         static constexpr int WINDOW_HEIGHT = 800;
         static constexpr std::string WINDOW_TITLE = "Tetris";
 

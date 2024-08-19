@@ -74,6 +74,7 @@ namespace Tetris
         void setupSprites();
 
         void renderBackground() const;
+        void renderForeground() const;
         void renderPlayfield(const GameController& controller) const;
         void renderCurrentPiece(const GameController& controller) const;
         void renderNextPiece(const GameController& controller) const;

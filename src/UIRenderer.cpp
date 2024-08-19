@@ -12,18 +12,18 @@ namespace Tetris
 {
     UILayout::UILayout()
         : windowSize(GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT)
-          , boardPosition(80.0f, 60.0f)
-          , boardSize(320.0f, 640.0f)
-          , sidePanelPosition(420.0f, 60.0f)
-          , sidePanelSize(160.0f, 640.0f)
-          , nextPanelPosition(440.0f, 80.0f)
+          , boardPosition(80.0f, 80.0f)
+          , boardSize(300.0f, 600.0f)
+          , sidePanelPosition(420.0f, 80.0f)
+          , sidePanelSize(160.0f, 600.0f)
+          , nextPanelPosition(440.0f, 140.0f)
           , nextPanelSize(120.0f, 120.0f)
-          , levelTextPos(440.0f, 220.0f)
-          , scoreTextPos(440.0f, 300.0f)
-          , linesTextPos(440.0f, 380.0f)
-          , nextTextPos(480.0f, 50.0f)
+          , levelTextPos(440.0f, 300.0f)
+          , scoreTextPos(440.0f, 370.0f)
+          , linesTextPos(440.0f, 440.0f)
+          , nextTextPos(480.0f, 100.0f)
           , tileSize(30.0f)
-          , playFieldOffset(88.0f, 68.0f)
+          , playFieldOffset(80.0f, 80.0f)
           , nextPieceOffset(470.0f, 110.0f)
     {
     }
@@ -111,38 +111,30 @@ namespace Tetris
         nextText_.setPosition(layout_.nextTextPos);
     }
 
-    void UIRenderer::setupShapes()
-    {
-        float X      = static_cast<float>(GameConfig::WINDOW_WIDTH) / 800.0f;
-        float scaleY = static_cast<float>(GameConfig::WINDOW_HEIGHT) / 600.0f;
+void UIRenderer::setupShapes()
+{
+    gameBoard_.setSize({layout_.boardSize.x, layout_.boardSize.y});
+    gameBoard_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
+    gameBoard_.setFillColor(sf::Color(25, 25, 50, 200));
+    gameBoard_.setOutlineColor(sf::Color(100, 150, 220, 220));
+    gameBoard_.setOutlineThickness(2.0f);
 
-        gameBoard_.setSize({layout_.boardSize.x * scaleX, layout_.boardSize.y * scaleY});
-        gameBoard_.setPosition({layout_.boardPosition.x * scaleX, layout_.boardPosition.y * scaleY});
-        gameBoard_.setFillColor(sf::Color(20, 20, 40, 180));
-        gameBoard_.setOutlineColor(sf::Color(100, 150, 200, 255));
-        gameBoard_.setOutlineThickness(3.0f);
+    sidePanel_.setSize(layout_.sidePanelSize);
+    sidePanel_.setPosition(layout_.sidePanelPosition);
+    sidePanel_.setFillColor(sf::Color(20, 20, 40, 180));
+    sidePanel_.setOutlineColor(sf::Color(100, 150, 220, 220));
+    sidePanel_.setOutlineThickness(2.0f);
 
-        sf::RectangleShape shadow = gameBoard_;
-        shadow.setPosition({gameBoard_.getPosition().x + 5, gameBoard_.getPosition().y + 5});
-        shadow.setFillColor(sf::Color(0, 0, 0, 100));
-        shadow.setOutlineThickness(0);
+    nextPiecePanel_.setSize(layout_.nextPanelSize);
+    nextPiecePanel_.setPosition(layout_.nextPanelPosition);
+    nextPiecePanel_.setFillColor(sf::Color(35, 35, 60, 200));
+    nextPiecePanel_.setOutlineColor(sf::Color(120, 180, 250, 220));
+    nextPiecePanel_.setOutlineThickness(1.0f);
 
-        sidePanel_.setSize(layout_.sidePanelSize);
-        sidePanel_.setPosition(layout_.sidePanelPosition);
-        sidePanel_.setFillColor(sf::Color(10, 10, 30, 150));
-        sidePanel_.setOutlineColor(sf::Color(80, 120, 160, 200));
-        sidePanel_.setOutlineThickness(2.0f);
-
-        nextPiecePanel_.setSize(layout_.nextPanelSize);
-        nextPiecePanel_.setPosition(layout_.nextPanelPosition);
-        nextPiecePanel_.setFillColor(sf::Color(30, 30, 50, 180));
-        nextPiecePanel_.setOutlineColor(sf::Color(100, 150, 200, 200));
-        nextPiecePanel_.setOutlineThickness(1.0f);
-
-        playfieldBackground_.setSize(sf::Vector2f(layout_.boardSize.x - 20.0f, layout_.boardSize.y - 20.0f));
-        playfieldBackground_.setPosition({layout_.boardPosition.x + 10.0f, layout_.boardPosition.y + 10.0f});
-        playfieldBackground_.setFillColor(sf::Color(255, 255, 255, 80));
-    }
+    playfieldBackground_.setSize(sf::Vector2f(layout_.boardSize.x, layout_.boardSize.y));
+    playfieldBackground_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
+    playfieldBackground_.setFillColor(sf::Color(255, 255, 255, 0));
+}
 
     void UIRenderer::setupSprites()
     {
@@ -169,6 +161,11 @@ namespace Tetris
         renderGameState(controller);
     }
 
+    void UIRenderer::renderForeground() const
+    {
+        window_.draw(*foregroundSprite_);
+    }
+
     void UIRenderer::renderBackground() const
     {
         window_.draw(*backgroundSprite_);
@@ -182,17 +179,17 @@ namespace Tetris
 
         for (int x = 0; x <= Playfield::WIDTH; ++x)
         {
-            sf::RectangleShape line(sf::Vector2f(1.0f, layout_.boardSize.y - 16.0f));
+            sf::RectangleShape line(sf::Vector2f(1.0f, layout_.boardSize.y));
             line.setPosition({layout_.playFieldOffset.x + x * layout_.tileSize, layout_.playFieldOffset.y});
-            line.setFillColor(sf::Color(100, 100, 100, 50));
+            line.setFillColor(sf::Color(100, 100, 100, 100));
             window_.draw(line);
         }
 
         for (int y = 0; y <= Playfield::HEIGHT; ++y)
         {
-            sf::RectangleShape line(sf::Vector2f(layout_.boardSize.x - 16.0f, 1.0f));
+            sf::RectangleShape line(sf::Vector2f(layout_.boardSize.x, 1.0f));
             line.setPosition({layout_.playFieldOffset.x, layout_.playFieldOffset.y + y * layout_.tileSize});
-            line.setFillColor(sf::Color(100, 100, 100, 50));
+            line.setFillColor(sf::Color(100, 100, 100, 100));
             window_.draw(line);
         }
 
@@ -264,6 +261,7 @@ namespace Tetris
         window_.draw(linesText_);
         window_.draw(nextText_);
 
+        renderForeground();
         renderPlayfield(controller);
         renderCurrentPiece(controller);
         renderNextPiece(controller);
@@ -295,7 +293,7 @@ namespace Tetris
         sf::Text text(font_, message, 30);
         text.setFillColor(color);
 
-        sf::FloatRect textBounds = text.getLocalBounds();
+        const sf::FloatRect textBounds = text.getLocalBounds();
         text.setPosition(
             {
                 (layout_.windowSize.x - textBounds.size.x) / 2.0f,

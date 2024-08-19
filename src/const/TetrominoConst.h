@@ -17,8 +17,8 @@ namespace Tetris::TetrominoConst
     //  [6][7]
 
     inline std::unordered_map<TetrominoType, std::vector<std::array<int, 2>>> TETROMINO_SHAPES = {
-        {TetrominoType::I, {{-1, 0}, {0, 0}, {1, 0}, {2, 0}}},   // I-piece (horizontal line)
-        {TetrominoType::O, {{0, 0}, {1, 0}, {0, 1}, {1, 1}}},    // O-piece (square)
+        {TetrominoType::I, {{0, 0}, {0, -1}, {0, -2}, {0, -3}}},   // I-piece (horizontal line)
+        {TetrominoType::O, {{0, 0}, {1, 0}, {0, -1}, {1, -1}}},    // O-piece (square)
         {TetrominoType::T, {{0, 0}, {-1, 0}, {1, 0}, {0, -1}}},  // T-piece
         {TetrominoType::S, {{0, 0}, {1, 0}, {0, -1}, {-1, -1}}}, // S-piece
         {TetrominoType::Z, {{0, 0}, {-1, 0}, {0, -1}, {1, -1}}}, // Z-piece

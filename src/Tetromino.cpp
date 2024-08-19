@@ -17,12 +17,12 @@ namespace Tetris
 
         for (const auto& coord : coords)
         {
-            sf::Vector2i rotatedCoord = rotatePoint(coord.x, coord.y, rotationState);
+            const sf::Vector2i rotatedCoord = rotatePoint(coord.x, coord.y, rotationState);
             positions.emplace_back(rotatedCoord.x + offset.x, rotatedCoord.y + offset.y);
         }
     }
 
-    sf::Vector2i Tetromino::rotatePoint(int x, int y, int rotation) const
+    sf::Vector2i Tetromino::rotatePoint(int x, int y, const int rotation) const
     {
         switch (rotation % 4)
         {
