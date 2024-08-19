@@ -86,6 +86,13 @@ namespace Tetris
             return false;
         }
 
+        if (!icon_.loadFromFile(ASSETS_DIR "icon.png"))
+        {
+            std::cerr << "Failed to load icon" << std::endl;
+            return false;
+        }
+        window_.setIcon({icon_.getSize().x, icon_.getSize().y}, icon_.getPixelsPtr());
+
         return true;
     }
 

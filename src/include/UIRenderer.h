@@ -55,6 +55,7 @@ namespace Tetris
         sf::Font fontNumber_;
         sf::Texture backgroundTexture_;
         sf::Texture foregroundTexture_;
+        sf::Image icon_;
 
         sf::Text levelNumberText_;
         sf::Text scoreNumberText_;
