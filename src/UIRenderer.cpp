@@ -91,8 +91,14 @@ namespace Tetris
             std::cerr << "Failed to load icon" << std::endl;
             return false;
         }
-        window_.setIcon({icon_.getSize().x, icon_.getSize().y}, icon_.getPixelsPtr());
 
+        if (!titleTexture_.loadFromFile(ASSETS_DIR "title.png"))
+        {
+            std::cerr << "Failed to load title image" << std::endl;
+            return false;
+        }
+
+        window_.setIcon({icon_.getSize().x, icon_.getSize().y}, icon_.getPixelsPtr());
         return true;
     }
 
@@ -202,6 +208,19 @@ namespace Tetris
         float scaleY              = playfieldBackground_.getSize().y / fgSize.y;
         foregroundSprite_->setScale({scaleX, scaleY});
         foregroundSprite_->setPosition(playfieldBackground_.getPosition());
+
+        titleTexture_.setSmooth(true);
+        titleSprite_ = std::make_unique<sf::Sprite>(titleTexture_);
+        titleSprite_->setScale({0.6f, 0.6f});
+
+        const sf::Vector2u textureSize = titleTexture_.getSize();
+        const sf::Vector2f windowSize  = layout_.windowSize;
+        titleSprite_->setPosition(
+            {
+                (windowSize.x - textureSize.x * titleSprite_->getScale().x) / 2.0f,
+                (windowSize.y - textureSize.y * titleSprite_->getScale().y) / 4.0f
+            }
+        );
     }
 
     void UIRenderer::render(const GameController& controller)
@@ -324,7 +343,7 @@ namespace Tetris
         window_.draw(timeNumberText_);
         window_.draw(nextText_);
 
-        renderForeground();
+        // renderForeground();
         renderPlayfield(controller);
         renderCurrentPiece(controller);
         renderNextPiece(controller);
@@ -332,26 +351,27 @@ namespace Tetris
 
     void UIRenderer::renderGameState(const GameController& controller)
     {
-        switch (controller.getGameState())
+        switch (const auto gameState = controller.getGameState())
         {
             case GameState::Start:
-                renderMessageScreen("Press Enter to Start");
+                renderMessageScreen("Press Enter to Start", gameState, sf::Color(255, 180, 230, 255));
                 break;
             case GameState::Play:
                 renderUI(controller);
                 break;
             case GameState::Pause:
                 renderUI(controller);
-                renderMessageScreen("Game Paused\n\nPress P to Resume", sf::Color::Yellow);
+                renderMessageScreen("Game Paused\n\nPress P to Resume", gameState, sf::Color::Yellow);
                 break;
             case GameState::GameOver:
                 renderUI(controller);
-                renderMessageScreen("Game Over!\n\nPress Enter to Restart", sf::Color::Red);
+                renderMessageScreen("Game Over!\n\nPress Enter to Restart", gameState, sf::Color::Red);
                 break;
         }
     }
 
-    void UIRenderer::renderMessageScreen(const std::string& message, const sf::Color color) const
+    void UIRenderer::renderMessageScreen(const std::string& message, const GameState gameState,
+                                         const sf::Color color) const
     {
         sf::Text text(fontText_, message, 30);
         text.setFillColor(color);
@@ -368,6 +388,11 @@ namespace Tetris
         overlay.setFillColor(sf::Color(0, 0, 0, 150));
         window_.draw(overlay);
 
+        if (gameState == GameState::Start)
+        {
+            text.setStyle(sf::Text::Bold);
+            window_.draw(*titleSprite_);
+        }
         window_.draw(text);
     }
 

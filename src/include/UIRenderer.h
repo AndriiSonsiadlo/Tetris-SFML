@@ -55,6 +55,7 @@ namespace Tetris
         sf::Font fontNumber_;
         sf::Texture backgroundTexture_;
         sf::Texture foregroundTexture_;
+        sf::Texture titleTexture_;
         sf::Image icon_;
 
         sf::Text levelNumberText_;
@@ -74,6 +75,7 @@ namespace Tetris
 
         std::unique_ptr<sf::Sprite> backgroundSprite_;
         std::unique_ptr<sf::Sprite> foregroundSprite_;
+        std::unique_ptr<sf::Sprite> titleSprite_;
 
         bool loadAssets();
         void setupUI();
@@ -88,7 +90,8 @@ namespace Tetris
         void renderNextPiece(const GameController& controller) const;
         void renderUI(const GameController& controller);
         void renderGameState(const GameController& controller);
-        void renderMessageScreen(const std::string& message, sf::Color color = sf::Color::White) const;
+        void renderMessageScreen(const std::string& message, GameState gameState,
+                                 sf::Color color = sf::Color::White) const;
 
         void updateGameStats(const GameController& controller);
         static sf::Vector2f centerText(const sf::Text& text, sf::Vector2f containerSize, sf::Vector2f containerPos);
