@@ -170,7 +170,7 @@ namespace Tetris
     {
         gameBoard_.setSize({layout_.boardSize.x, layout_.boardSize.y});
         gameBoard_.setPosition({layout_.boardPosition.x, layout_.boardPosition.y});
-        gameBoard_.setFillColor(sf::Color(25, 25, 50, 200));
+        gameBoard_.setFillColor(sf::Color(20, 20, 40, 180));
         gameBoard_.setOutlineColor(sf::Color(100, 150, 220, 220));
         gameBoard_.setOutlineThickness(2.0f);
 
@@ -218,7 +218,7 @@ namespace Tetris
         titleSprite_->setPosition(
             {
                 (windowSize.x - textureSize.x * titleSprite_->getScale().x) / 2.0f,
-                (windowSize.y - textureSize.y * titleSprite_->getScale().y) / 4.0f
+                (windowSize.y - textureSize.y * titleSprite_->getScale().y) / 3.0f
             }
         );
     }
@@ -328,6 +328,8 @@ namespace Tetris
 
     void UIRenderer::renderUI(const GameController& controller)
     {
+        renderForeground();
+
         window_.draw(gameBoard_);
         window_.draw(sidePanel_);
         window_.draw(nextPiecePanel_);
@@ -343,7 +345,6 @@ namespace Tetris
         window_.draw(timeNumberText_);
         window_.draw(nextText_);
 
-        // renderForeground();
         renderPlayfield(controller);
         renderCurrentPiece(controller);
         renderNextPiece(controller);
@@ -354,7 +355,7 @@ namespace Tetris
         switch (const auto gameState = controller.getGameState())
         {
             case GameState::Start:
-                renderMessageScreen("Press Enter to Start", gameState, sf::Color(255, 180, 230, 255));
+                renderMessageScreen("Press Enter to Start", gameState, sf::Color(255, 150, 230, 255));
                 break;
             case GameState::Play:
                 renderUI(controller);
@@ -391,6 +392,9 @@ namespace Tetris
         if (gameState == GameState::Start)
         {
             text.setStyle(sf::Text::Bold);
+            text.setOutlineColor(sf::Color(255, 100, 130, 255));
+            text.setOutlineThickness(1.0f);
+            text.move({0, 70});
             window_.draw(*titleSprite_);
         }
         window_.draw(text);
